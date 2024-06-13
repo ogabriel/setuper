@@ -10,7 +10,11 @@
 - [ ] handle properties for user files
 - [ ] handle ssh keys creation
 
+## future features
+
+- [ ] support for flatpak
+- [ ] support for other package managers
+
 ## TODO
 
-- [ ] fix command line arguments for most commands
-- [ ] 
+- [ ] validate command line arguments for most commands
