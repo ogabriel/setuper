@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+if [[ -f /usr/lib/setupper/main.sh ]]; then
+    source /usr/lib/setupper/main.sh
+elif [[ -f ./lib/main.sh ]]; then
+    source ./lib/main.sh
+else
+    echo "No entrypoint found"
+    exit 1
+fi
