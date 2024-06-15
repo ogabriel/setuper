@@ -49,11 +49,12 @@ The config file is just a config file, so you can do everything you want, the ma
 ## future features
 
 - [ ] strict mode for more control over system
-- [ ] allow to be run as root
+- [ ] support for sourcing a file to install a package (ex: .deb files)
+- [ ] enable support for asdf
 - [ ] support for flatpak
 - [ ] support for other package managers from other distros
+- [ ] allow to be run as root
 - [ ] community configs to certain hardware (ex: nvidia)
-- [ ] enable support for asdf
 - [ ] add a way to use transactions/checksums to avoid doing too much work
 
 ## Motivation, Inspirations and alternatives
