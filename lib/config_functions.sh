@@ -59,28 +59,64 @@ function SystemdUnitSystemMask() {
     systemd_unit_system_mask+=($1)
 }
 
+system_files_dir=$config_dir/system
+
 function SystemFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
-    system_files+=($1)
+    local system_file=$system_files_dir$1
+
+    if [[ -f $system_file ]]; then
+        system_files+=($1)
+    elif [[ -d $system_file ]]; then
+        system_dirs+=($1)
+    else
+        Error "Invalid file or directory $system_file"
+    fi
 }
 
 function SystemFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    system_files_from_to+=("$1 $2")
+    local system_file=$system_files_dir$2
+
+    if [[ -f $system_file ]]; then
+        system_files_from_to+=($1 $2)
+    elif [[ -d $system_file ]]; then
+        system_dirs_from_to+=("$1 $2")
+    else
+        Error "Invalid file or directory $system_file"
+    fi
 }
+
+user_files_dir=$config_dir/user
 
 function UserFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
-    user_files+=($1)
+    local user_file=$user_files_dir$1
+
+    if [[ -f $user_file ]]; then
+        user_files+=($1)
+    elif [[ -d $user_file ]]; then
+        user_dirs+=($1)
+    else
+        Error "Invalid file or directory $user_file"
+    fi
 }
 
 function UserFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    user_files_from_to+=("$1 $2")
+    local user_file=$user_files_dir$2
+
+    if [[ -f $user_file ]]; then
+        user_files_from_to+=($1 $2)
+    elif [[ -d $user_file ]]; then
+        user_dirs_from_to+=("$1 $2")
+    else
+        Error "Invalid file or directory $user_file"
+    fi
 }
 
 function SSHGenKey() {
