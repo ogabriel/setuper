@@ -77,7 +77,7 @@ function HandlePackages() {
         pacman)
             Info "Installing packages with pacman"
             sudo pacman -Sy --noconfirm archlinux-keyring
-            sudo pacman -Sy --noconfirm --needed ${packages[*]}
+            sudo pacman -S --noconfirm --needed ${packages[*]}
 
             ;;
         yay)
@@ -88,7 +88,7 @@ function HandlePackages() {
             fi
 
             Info "Installing packages with yay"
-            yay -Syy --noconfirm --needed ${aur_packages[*]}
+            yay -S --noconfirm --needed ${aur_packages[*]}
             ;;
         esac
     fi
