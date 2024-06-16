@@ -94,14 +94,24 @@ user_files_dir=$config_dir/user
 function UserFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
-    local user_file=$user_files_dir$1
+    local from_file=$user_files_dir$1
 
-    if [[ -f $user_file ]]; then
+    if [[ -f $from_file ]]; then
         user_files+=($1)
-    elif [[ -d $user_file ]]; then
+    else
+        Error "Invalid file $from_file"
+    fi
+}
+
+function UserDirectory() {
+    ValidateFunctionParams 1 $# $FUNCNAME
+
+    local from_directory=$user_files_dir$1
+
+    if [[ -d $from_directory ]]; then
         user_directories+=($1)
     else
-        Error "Invalid file or directory $user_file"
+        Error "Invalid directory $from_directory"
     fi
 }
 
@@ -115,7 +125,7 @@ function UserFileFromTo() {
     elif [[ -d $user_file ]]; then
         user_directories_from_to+=("$1 $2")
     else
-        Error "Invalid file or directory $user_file"
+        Error "Invalid file or directory$user_file"
     fi
 }
 
