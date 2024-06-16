@@ -1,6 +1,6 @@
 # Setuper
 
-Aplication to handle everything related to your Arch Linux instalation
+Aplication to handle everything related to your system and dotfiles!
 
 ## Configuration
 
