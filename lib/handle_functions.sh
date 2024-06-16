@@ -31,10 +31,12 @@ function HandleUsers() {
         if [[ ${groups} ]]; then
             for group in ${groups_by_user[$user]}; do
                 if ! getent group $group &>/dev/null; then
+                    Info "Creating group $group for user $user"
                     sudo groupadd $group
                 fi
 
                 if ! id $user | grep $group &>/dev/null; then
+                    Info "Adding user $user to group $group"
                     sudo usermod -aG $group $user
                 fi
             done
