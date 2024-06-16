@@ -39,7 +39,7 @@ function HandleUsers() {
         fi
 
         if [[ $shell ]]; then
-            if ! getent passwd $user | | cut -d : -f 7 | grep $shell; then
+            if ! getent passwd $user | cut -d : -f 7 | grep $shell &>/dev/null ; then
                 sudo usermod -s $(which $shell) $user
             fi
         fi
