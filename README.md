@@ -35,14 +35,16 @@ The order is thought to not cause any problems, so for example, the packages wil
 The config file is just a config file, so you can do everything you want, the main use of this feature will be something like have TLP only installed on your laptops.
 
 ## TODO
-- [ ] handle users
-- [ ] handle user's groups
-- [ ] handle packages
-- [ ] handle AUR packages
-- [ ] handle systemd units
-- [ ] handle system files
+- [X] handle users
+- [X] handle user's groups
+- [X] handle packages
+- [X] handle AUR packages
+- [X] handle systemd units
+- [X] handle system files
+- [X] handle system directories
 - [ ] handle properties for system files
-- [ ] handle user files
+- [X] handle user files
+- [X] handle system directories
 - [ ] handle ssh keys creation
 - [ ] handle ssh keys addition
 
