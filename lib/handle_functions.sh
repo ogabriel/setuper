@@ -90,3 +90,31 @@ function HandlePackages() {
         esac
     fi
 }
+
+function HandleSystemdUnits() {
+    echo "systemd"
+    if [[ ${#systemd_unit_system_enable[*]} -gt 0 ]] ||
+        [[ ${#systemd_unit_user_enable[*]} -gt 0 ]] ||
+        [[ ${#systemd_unit_system_mask[*]} -gt 0 ]]; then
+
+        sudo systemctl daemon-reload
+
+        for service in ${systemd_unit_system_enable[*]}; do
+            if ! systemctl is-enabled --quiet $sevice &>/dev/null; then
+                sudo systemctl enable $service
+            fi
+        done
+
+        for service in ${systemd_unit_user_enable[*]}; do
+            if ! systemctl --user is-enabled --quiet $sevice &>/dev/null; then
+                systemctl --user enable $service
+            fi
+        done
+
+        for service in ${systemd_unit_system_mask[*]}; do
+            if ! systemctl list-unit-files --quiet --state=masked | grep $service &>/dev/null; then
+                sudo systemctl mask $service
+            fi
+        done
+    fi
+}
