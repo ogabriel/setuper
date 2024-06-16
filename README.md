@@ -1,4 +1,4 @@
-# Setupper
+# Setuper
 
 Aplication to handle everything related to your Arch Linux instalation
 
@@ -65,7 +65,7 @@ I've been trying to have a self contained system for years, I've seem the strang
 
 Even on windows i would try to write down how I made certain things work, when I started using linux, I would have the most extensive scripts to install everything to my liking, but every time I would forget how I made certain important thing work.
 
-My previous tries, inspirations and alternatives to setupper:
+My previous tries, inspirations and alternatives to setuper:
 
 - [setup](https://github.com/ogabriel/setup) - It's a collection of scripts that I've used for some years, and aren't ideal to manage a system
 - [ricer](https://github.com/ogabriel/ricer) - A try at managing a system, but the go syntax was not write to write my configs down

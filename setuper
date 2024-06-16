@@ -2,8 +2,8 @@
 
 set -e
 
-if [[ -f /usr/lib/setupper/main.sh ]]; then
-    source /usr/lib/setupper/main.sh
+if [[ -f /usr/lib/setuper/main.sh ]]; then
+    source /usr/lib/setuper/main.sh
 elif [[ -f ./lib/main.sh ]]; then
     source ./lib/main.sh
 else
