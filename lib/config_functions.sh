@@ -64,28 +64,48 @@ system_files_dir=$config_dir/system
 function SystemFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
-    local system_file=$system_files_dir$1
+    local from_file=$system_files_dir$1
 
-    if [[ -f $system_file ]]; then
+    if [[ -f $from_file ]]; then
         system_files+=($1)
-    elif [[ -d $system_file ]]; then
-        system_directories+=($1)
     else
-        Error "Invalid file or directory $system_file"
+        Error "Invalid file $from_file"
     fi
 }
 
 function SystemFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local system_file=$system_files_dir$2
+    local from_file=$system_files_dir$2
 
-    if [[ -f $system_file ]]; then
+    if [[ -f $from_file ]]; then
         system_files_from_to+=($1 $2)
-    elif [[ -d $system_file ]]; then
+    else
+        Error "Invalid file $from_file"
+    fi
+}
+
+function SystemDirectory() {
+    ValidateFunctionParams 1 $# $FUNCNAME
+
+    local from_dir=$system_files_dir$1
+
+    if [[ -d $from_dir ]]; then
+        system_directories+=($1)
+    else
+        Error "Invalid directory $from_dir"
+    fi
+}
+
+function SystemDirectoryFromTo() {
+    ValidateExactFunctionParams 2 $# $FUNCNAME
+
+    local from_dir=$system_files_dir$2
+
+    if [[ -d $from_dir ]]; then
         system_directories_from_to+=("$1 $2")
     else
-        Error "Invalid file or directory $system_file"
+        Error "Invalid directory $from_dir"
     fi
 }
 
@@ -103,6 +123,18 @@ function UserFile() {
     fi
 }
 
+function UserFileFromTo() {
+    ValidateExactFunctionParams 2 $# $FUNCNAME
+
+    local from_file=$user_files_dir$2
+
+    if [[ -f $from_file ]]; then
+        user_files_from_to+=($1 $2)
+    else
+        Error "Invalid file $from_file"
+    fi
+}
+
 function UserDirectory() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
@@ -115,17 +147,15 @@ function UserDirectory() {
     fi
 }
 
-function UserFileFromTo() {
+function UserDirectoryFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local user_file=$user_files_dir$2
+    local from_directory=$user_files_dir$2
 
-    if [[ -f $user_file ]]; then
-        user_files_from_to+=($1 $2)
-    elif [[ -d $user_file ]]; then
+    if [[ -d $from_directory ]]; then
         user_directories_from_to+=("$1 $2")
     else
-        Error "Invalid file or directory$user_file"
+        Error "Invalid directory $from_directory"
     fi
 }
 
