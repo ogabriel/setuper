@@ -76,7 +76,7 @@ function SystemFile() {
 function SystemFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local from_file=$system_files_dir$2
+    local from_file=$system_files_dir$1
 
     if [[ -f $from_file ]]; then
         system_files_from_to+=($1 $2)
@@ -100,7 +100,7 @@ function SystemDirectory() {
 function SystemDirectoryFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local from_dir=$system_files_dir$2
+    local from_dir=$system_files_dir$1
 
     if [[ -d $from_dir ]]; then
         system_directories_from_to+=("$1 $2")
@@ -126,7 +126,7 @@ function UserFile() {
 function UserFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local from_file=$user_files_dir$2
+    local from_file=$user_files_dir$1
 
     if [[ -f $from_file ]]; then
         user_files_from_to+=($1 $2)
@@ -150,7 +150,7 @@ function UserDirectory() {
 function UserDirectoryFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
-    local from_directory=$user_files_dir$2
+    local from_directory=$user_files_dir$1
 
     if [[ -d $from_directory ]]; then
         user_directories_from_to+=("$1 $2")
