@@ -44,6 +44,7 @@ function HandleUsers() {
 
         if [[ $shell ]]; then
             if ! getent passwd $user | cut -d : -f 7 | grep $shell &>/dev/null; then
+                Info "Changing shell of user $user to $shell"
                 sudo usermod -s $(which $shell) $user
             fi
         fi
