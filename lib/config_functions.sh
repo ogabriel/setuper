@@ -41,22 +41,22 @@ function Pkg() {
     Package $@
 }
 
-function SystemdEnable() {
+function SystemdUnitSystemEnable() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
-    systemd_enable_system+=($1)
+    systemd_unit_system_enable+=($1)
 }
 
-function SystemdEnableUser() {
+function SystemdUnitUserEnable() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
-    systemd_enable_user+=($1)
+    systemd_unit_user_enable+=($1)
 }
 
-function SystemdMask() {
+function SystemdUnitSystemMask() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
-    systemd_mask_system+=($1)
+    systemd_unit_system_mask+=($1)
 }
 
 function SystemFile() {
