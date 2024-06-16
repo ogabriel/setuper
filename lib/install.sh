@@ -1,0 +1,29 @@
+source $lib_dir/helper_functions.sh
+
+CheckConfig
+CheckPermissons
+
+source $lib_dir/config_functions.sh
+
+LoadConfig
+
+source $lib_dir/handler_functions.sh
+
+HandlePackages
+
+HandleSystemFiles
+HandleSystemFilesFromTo
+HandleSystemDirectories
+HandleSystemDirectoriesFromTo
+
+HandleGroups
+HandleUsers
+
+HandleUserFiles
+HandleUserFilesFromTo
+HandleUserDirectories
+HandleUserDirectoriesFromTo
+
+HandleSystemdUnits
+
+HandleSSHKeyGen
