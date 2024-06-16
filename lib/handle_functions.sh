@@ -1,6 +1,7 @@
 function HandleGroups() {
     for group in ${groups[*]}; do
         if ! getent group $group &>/dev/null; then
+            Info "Creating group $group"
             sudo groupadd $group
         fi
     done
