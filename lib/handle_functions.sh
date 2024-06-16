@@ -137,37 +137,59 @@ function SystemCreateDirectories() {
     done
 }
 
-function HandleSystemFiles() {
-    for to_file in ${system_files[*]}; do
-        local from_file=$system_files_dir$file
+function HandleSystemFile() {
+    local from_file=$1
+    local to_file=$2
 
-        if ! sudo test -f $to_file; then
-            SystemCreateDirectories $to_file
+    if ! sudo test -f $to_file; then
+        SystemCreateDirectories $to_file
+        Info "Copying file $from_file to $to_file"
+        sudo cp $from_file $to_file
+    else
+        if ! sudo diff $from_file $to_file; then
             Info "Copying file $from_file to $to_file"
             sudo cp $from_file $to_file
-        else
-            if ! sudo diff $from_file $to_file; then
-                Info "Copying file $from_file to $to_file"
-                sudo cp $from_file $to_file
-            fi
         fi
+    fi
+}
+
+function HandleSystemFiles() {
+    for to_file in ${system_files[*]}; do
+        HandleSystemFile $system_files_dir$to_file $to_file
     done
+}
+
+function HandleSystemFilesFromTo() {
+    for ((i = 0; i < ${#system_files_from_to[@]}; i += 2)); do
+        HandleSystemFile $system_files_dir${system_files_from_to[i]} ${system_files_from_to[i + 1]}
+    done
+}
+
+function HandleSystemDirectory() {
+    local from_dir=$1
+    local to_dir=$2
+
+    if ! sudo test -d $to_dir; then
+        SystemCreateDirectories $to_dir
+        Info "Copying directory $from_dir to $to_dir"
+        sudo cp -r $from_dir $to_dir
+    else
+        if ! sudo diff -r $from_dir $to_dir; then
+            Info "Copying directory $from_dir to $to_dir"
+            sudo cp -r $from_dir $to_dir
+        fi
+    fi
 }
 
 function HandleSystemDirectories() {
     for to_dir in ${system_directories[*]}; do
-        local from_dir=$system_files_dir$to_dir
+        HandleSystemDirectory $system_files_dir$to_dir $to_dir
+    done
+}
 
-        if ! sudo test -d $to_dir; then
-            SystemCreateDirectories $to_dir
-            Info "Copying directory $from_dir to $to_dir"
-            sudo cp -r $from_dir $to_dir
-        else
-            if ! sudo diff -r $from_dir $to_dir; then
-                Info "Copying directory $from_dir to $to_dir"
-                sudo cp -r $from_dir $to_dir
-            fi
-        fi
+function HandleSystemDirectoriesFromTo() {
+    for ((i = 0; i < ${#system_directories_from_to[@]}; i += 2)); do
+        HandleSystemDirectory $system_files_dir${system_directories_from_to[i]} ${system_directories_from_to[i + 1]}
     done
 }
 
@@ -185,34 +207,55 @@ function UserCreateDirectories() {
     done
 }
 
+function HandleUserFile() {
+    local from_file=$1
+    local to_file=$2
+
+    if [[ ! -L $to_file ]] || [[ "$(readlink $to_file)" != $from_file ]]; then
+        UserCreateDirectories $to_file
+        Info "Linking file $from_file to $to_file"
+        ln -s $from_file $to_file
+    elif [[ -f $to_file ]]; then
+        Info "Linking file $from_file to $to_file"
+        ln -sf $from_file $to_file
+    fi
+}
+
 function HandleUserFiles() {
     for file in ${user_files[*]}; do
-        local from_file=$user_files_dir$file
-        local to_file=$HOME$file
-
-        if [[ ! -L $to_file ]] || [[ "$(readlink $to_file)" != $from_file ]]; then
-            UserCreateDirectories $to_file
-            Info "Linking file $from_file to $to_file"
-            ln -s $from_file $to_file
-        elif [[ -f $to_file ]]; then
-            Info "Linking file $from_file to $to_file"
-            ln -sf $from_file $to_file
-        fi
+        HandleUserFile $user_files_dir$file $HOME$file
     done
+}
+
+function HandleUserFilesFromTo() {
+    for ((i = 0; i < ${#user_files_from_to[@]}; i += 2)); do
+        HandleUserFile $user_files_dir${user_files_from_to[i]} $HOME${user_files_from_to[i + 1]}
+    done
+}
+
+function HandleUserDirectory() {
+    local from_dir=$1
+    local to_dir=$2
+
+    if [[ ! -L $to_dir ]] || [[ "$(readlink $to_dir)" != $from_dir ]]; then
+        UserCreateDirectories $to_dir
+        Info "Linking directory from $from_dir to $to_dir"
+        ln -s $from_dir $to_dir
+    elif [[ -d $to_dir ]]; then
+        Info "Linking directory from $from_dir to $to_dir"
+        ln -sf $from_dir $to_dir
+    fi
+
 }
 
 function HandleUserDirectories() {
     for directory in ${user_directories[*]}; do
-        local from_dir=$user_files_dir$directory
-        local to_dir=$HOME$directory
+        HandleUserDirectory $user_files_dir$directory $HOME$directory
+    done
+}
 
-        if [[ ! -L $to_dir ]] || [[ "$(readlink $to_dir)" != $from_dir ]]; then
-            UserCreateDirectories $to_dir
-            Info "Linking directory from $from_dir to $to_dir"
-            ln -s $from_dir $to_dir
-        elif [[ -d $to_dir ]]; then
-            Info "Linking directory from $from_dir to $to_dir"
-            ln -sf $from_dir $to_dir
-        fi
+function HandleUserDirectoriesFromTo() {
+    for ((i = 0; i < ${#user_directories_from_to[@]}; i += 2)); do
+        HandleUserDirectory $user_files_dir${user_directories_from_to[i]} $HOME${user_directories_from_to[i + 1]}
     done
 }
