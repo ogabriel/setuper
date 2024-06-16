@@ -21,7 +21,11 @@ function Info() {
 
 function CheckConfig() {
     if [[ ! -d $config_dir ]]; then
-        Error "Config directory not found"
+        Error "Config directory not found in $config_dir"
+    fi
+
+    if ! [[ -n "$(find $config_dir -maxdepth 1  -type f -size +0 -iname "*.sh" -print -quit)" ]]; then
+        Error "No valid .sh files found in $config_dir"
     fi
 }
 
