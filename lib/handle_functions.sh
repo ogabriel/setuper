@@ -123,3 +123,97 @@ function HandleSystemdUnits() {
         done
     fi
 }
+
+function SystemCreateDirectories() {
+    local directories=(${1//\// })
+    local current="/"
+
+    for ((i = 0; i + 1 < ${#directories[@]}; i++)); do
+        current+="${directories[i]}/"
+
+        if ! sudo test -d $current; then
+            sudo mkdir $current
+        fi
+    done
+}
+
+function HandleSystemFiles() {
+    for to_file in ${system_files[*]}; do
+        local from_file=$system_files_dir$file
+
+        if ! sudo test -f $to_file; then
+            SystemCreateDirectories $to_file
+            Info "Copying file $from_file to $to_file"
+            sudo cp $from_file $to_file
+        else
+            if ! sudo diff $from_file $to_file; then
+                Info "Copying file $from_file to $to_file"
+                sudo cp $from_file $to_file
+            fi
+        fi
+    done
+}
+
+function HandleSystemDirectories() {
+    for to_dir in ${system_directories[*]}; do
+        local from_dir=$system_files_dir$to_dir
+
+        if ! sudo test -d $to_dir; then
+            SystemCreateDirectories $to_dir
+            Info "Copying directory $from_dir to $to_dir"
+            sudo cp -r $from_dir $to_dir
+        else
+            if ! sudo diff -r $from_dir $to_dir; then
+                Info "Copying directory $from_dir to $to_dir"
+                sudo cp -r $from_dir $to_dir
+            fi
+        fi
+    done
+}
+
+function UserCreateDirectories() {
+    local directories=(${1//\// })
+    local current="/"
+
+    for ((i = 0; i + 1 < ${#directories[@]}; i++)); do
+        current+="${directories[i]}/"
+        echo $current
+
+        if ! test -d $current; then
+            Info "Creating directory $current"
+            mkdir $current
+        fi
+    done
+}
+
+function HandleUserFiles() {
+    for file in ${user_files[*]}; do
+        local from_file=$user_files_dir$file
+        local to_file=$HOME$file
+
+        if [[ ! -L $to_file ]] || [[ "$(readlink $to_file)" != $from_file ]]; then
+            UserCreateDirectories $to_file
+            Info "Linking file $from_file to $to_file"
+            ln -s $from_file $to_file
+        elif [[ -f $to_file ]]; then
+            Info "Linking file $from_file to $to_file"
+            ln -sf $from_file $to_file
+        fi
+    done
+}
+
+function HandleUserDirectories() {
+    for directory in ${user_directories[*]}; do
+        local from_dir=$user_files_dir$directory
+        local to_dir=$HOME$directory
+
+        if [[ ! -L $to_dir ]] || [[ "$(readlink $to_dir)" != $from_dir ]]; then
+            UserCreateDirectories $to_dir
+            Info "Linking directory from $from_dir to $to_dir"
+            ln -s $from_dir $to_dir
+        elif [[ -d $to_dir ]]; then
+            Info "Linking directory from $from_dir to $to_dir"
+            ln -sf $from_dir $to_dir
+        fi
+    done
+}
