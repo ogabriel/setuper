@@ -24,6 +24,7 @@ function HandleUsers() {
         done
 
         if ! id -u $user &>/dev/null; then
+            Info "Creating user $user"
             sudo useradd $user
         fi
 
