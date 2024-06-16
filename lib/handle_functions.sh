@@ -45,3 +45,48 @@ function HandleUsers() {
         fi
     done
 }
+
+function HandlePackages() {
+    for index in ${!packages[*]}; do
+        if pacman -Q ${packages[index]} &>/dev/null; then
+            unset 'packages[$index]'
+        fi
+    done
+
+    for index in ${!aur_packages[*]}; do
+        if pacman -Q ${aur_packages[index]} &>/dev/null; then
+            unset 'aur_packages[$index]'
+        fi
+    done
+
+    if ! [[ ${#aur_packages[*]} -eq 0 ]]; then
+        packages+=(${aur_packages[*]})
+
+        local installer=yay
+    else
+        local installer=pacman
+    fi
+
+    if [[ ${#packages[*]} -eq 0 ]]; then
+        Info "No packages to install"
+    else
+        sudo pacman -Syy --noconfirm --needed ${packages[*]}
+
+        case $installer in
+        pacman)
+            sudo pacman -Sy --noconfirm archlinux-keyring
+            sudo pacman -Sy --noconfirm --needed ${packages[*]}
+
+            ;;
+        yay)
+            sudo pacman -Sy --noconfirm archlinux-keyring
+
+            if ! pacman -Q yay &>/dev/null; then
+                source $lib_dir/installer/yay.sh
+            fi
+
+            yay -Syy --noconfirm --needed ${aur_packages[*]}
+            ;;
+        esac
+    fi
+}
