@@ -72,13 +72,10 @@ function HandlePackages() {
         local installer=pacman
     fi
 
-    if [[ ${#packages[*]} -eq 0 ]]; then
-        Info "No packages to install"
-    else
-        sudo pacman -Syy --noconfirm --needed ${packages[*]}
-
+    if ! [[ ${#packages[*]} -eq 0 ]]; then
         case $installer in
         pacman)
+            Info "Installing packages with pacman"
             sudo pacman -Sy --noconfirm archlinux-keyring
             sudo pacman -Sy --noconfirm --needed ${packages[*]}
 
@@ -90,6 +87,7 @@ function HandlePackages() {
                 source $lib_dir/installer/yay.sh
             fi
 
+            Info "Installing packages with yay"
             yay -Syy --noconfirm --needed ${aur_packages[*]}
             ;;
         esac
