@@ -177,7 +177,6 @@ function UserCreateDirectories() {
 
     for ((i = 0; i + 1 < ${#directories[@]}; i++)); do
         current+="${directories[i]}/"
-        echo $current
 
         if ! test -d $current; then
             Info "Creating directory $current"
