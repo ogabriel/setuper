@@ -245,7 +245,6 @@ function HandleUserDirectory() {
         Info "Linking directory from $from_dir to $to_dir"
         ln -sf $from_dir $to_dir
     fi
-
 }
 
 function HandleUserDirectories() {
