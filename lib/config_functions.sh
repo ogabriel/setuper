@@ -69,7 +69,7 @@ function SystemFile() {
     if [[ -f $system_file ]]; then
         system_files+=($1)
     elif [[ -d $system_file ]]; then
-        system_dirs+=($1)
+        system_directories+=($1)
     else
         Error "Invalid file or directory $system_file"
     fi
@@ -83,7 +83,7 @@ function SystemFileFromTo() {
     if [[ -f $system_file ]]; then
         system_files_from_to+=($1 $2)
     elif [[ -d $system_file ]]; then
-        system_dirs_from_to+=("$1 $2")
+        system_directories_from_to+=("$1 $2")
     else
         Error "Invalid file or directory $system_file"
     fi
@@ -99,7 +99,7 @@ function UserFile() {
     if [[ -f $user_file ]]; then
         user_files+=($1)
     elif [[ -d $user_file ]]; then
-        user_dirs+=($1)
+        user_directories+=($1)
     else
         Error "Invalid file or directory $user_file"
     fi
@@ -113,7 +113,7 @@ function UserFileFromTo() {
     if [[ -f $user_file ]]; then
         user_files_from_to+=($1 $2)
     elif [[ -d $user_file ]]; then
-        user_dirs_from_to+=("$1 $2")
+        user_directories_from_to+=("$1 $2")
     else
         Error "Invalid file or directory $user_file"
     fi
