@@ -19,6 +19,12 @@ function Info() {
     echo -e "${info}INFO: $no_color$message"
 }
 
+function CheckConfig() {
+    if [[ ! -d $config_dir ]]; then
+        Error "Config directory not found"
+    fi
+}
+
 function CheckPermissons() {
     if ! [[ $EUID -ne 0 ]]; then
         Error "This script must not be run as root nor with sudo"
