@@ -10,13 +10,13 @@ Aplication to handle everything related to your system and dotfiles!
     - --groups - list of groups that user shall be added
     - --shell - user's shell
 - `Group groupname` - creates a group
-- `Pkg/Package package` - sets a package to be installed and managed
+- `Pkg/Package packagename` - sets a package to be installed and managed
     - `--AUR/--aur` allows to specify the origin of the package
-- `SystemdEnable` - enables a systemd system unit
-- SystemdEnableUser -enables a system user unit
-- SystemdMask - masks a systemd system unit
-- SystemFile - copies a system file with superuser permissions, like a udev rule, tlp config etc.
-- SystemFileFromTo - same as SystemFile, but is used to rename the file from the name in your configs to a system name, mostly used if you're keeping configs for different systems
+- `SystemdUnitSystemEnable unitname` - enables a systemd system unit
+- `SystemdUnitSystemMask unitname` - masks a systemd system unit
+- `SystemdUnitUserEnable unitname` -enables a system user unit
+- `SystemFile` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
+- `SystemFileFromTo` - same as SystemFile, but is used to rename the file from the name in your configs to a system name, mostly used if you're keeping configs for different systems
 - UserFile - links a user file or folder, basically this shall be used for dotfiles, like `UserFile .conf/nvim` or `UserFile .zsh`
 - UserFileFromTo - self explanatory
 - SSHGen/SSHGenKey - generates a ssh key for params
