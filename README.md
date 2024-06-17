@@ -24,8 +24,8 @@ Aplication to handle everything related to your system and dotfiles!
 - `UserDirectory directory` - use it like `UserDirectory .conf/nvim`, so your nvim configs inside the folder `users/.config/nvim` will be linked to `~/.config/nvim`
 - `UserDirectoryFromTo from_directory to_directory` - same as above, but you can rename
 - `SSHGenKey` - generates a ssh key for params
-    - `--file` - key file, like `.ssh/id_rsa_foobar`
-    - `--comment` - for github this is your email
+    - `--file` - key file, like `id_rsa_foobar`
+    - `--comment` - comment for the key, for github this is your email
 - `SSHAddKey` - adds the key to your agent (idont know if this will world correctly)
 
 ### Execution order
