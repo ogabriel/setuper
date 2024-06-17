@@ -26,4 +26,5 @@ HandleUserDirectoriesFromTo
 
 HandleSystemdUnits
 
-HandleSSHKeyGen
+HandleSSHGenKeys
+HandleSSHAddkeys
