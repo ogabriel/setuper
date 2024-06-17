@@ -181,7 +181,7 @@ function SSHGenKey() {
 function SSHAddKey() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
-    ssh_add_keys+=("$ssh_key")
+    ssh_add_keys+=($1)
 }
 
 function LoadConfig() {
