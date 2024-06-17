@@ -34,7 +34,9 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 The config file is just a config file, so you can do everything you want, the main use of this feature will be something like have TLP only installed on your laptops.
 
-## TODO
+## Features
+
+### TODO
 - [X] handle users
 - [X] handle user's groups
 - [X] handle packages
@@ -48,7 +50,7 @@ The config file is just a config file, so you can do everything you want, the ma
 - [X] handle ssh keys creation
 - [X] handle ssh keys addition
 
-## future features
+### Future
 
 - [ ] strict mode for more control over system
 - [ ] support for sourcing a file to install a package (ex: .deb files)
