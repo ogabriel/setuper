@@ -6,13 +6,13 @@ Aplication to handle everything related to your system and dotfiles!
 
 ### Functions
 
-- Pkg/Package - sets a package to be installed and managed
-    - --AUR/--aur allows to specify the origin of the package
-- User - creates the user and configures it, can be just used as `User $USER`
+- `User username`- creates the user and configures it, can be just used as `User $USER`
     - --groups - list of groups that user shall be added
     - --shell - user's shell
-- Group - creates a group
-- SystemdEnable - enables a systemd system unit
+- `Group groupname` - creates a group
+- `Pkg/Package package` - sets a package to be installed and managed
+    - `--AUR/--aur` allows to specify the origin of the package
+- `SystemdEnable` - enables a systemd system unit
 - SystemdEnableUser -enables a system user unit
 - SystemdMask - masks a systemd system unit
 - SystemFile - copies a system file with superuser permissions, like a udev rule, tlp config etc.
