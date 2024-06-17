@@ -301,3 +301,18 @@ function HandleSSHGenKeys() {
         fi
     done
 }
+
+function HandleSSHAddkeys() {
+    for ssh_key in ${ssh_add_keys[*]}; do
+        local ssh_public_key_file="$HOME/.ssh/$ssh_key.pub"
+
+        if [[ -f "$ssh_public_key_file" ]]; then
+            if ! [[ "$(ssh-add -L)" =~ "$(cat $ssh_public_key_file)" ]]; then
+                Info "Adding SSH key $ssh_public_key_file to ssh-agent"
+                ssh-add $HOME/.ssh/$ssh_key
+            fi
+        else
+            Error "Invalid SSH key $$ssh_public_key_file"
+        fi
+    done
+}
