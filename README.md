@@ -45,8 +45,8 @@ The config file is just a config file, so you can do everything you want, the ma
 - [ ] handle properties for system files
 - [X] handle user files
 - [X] handle system directories
-- [ ] handle ssh keys creation
-- [ ] handle ssh keys addition
+- [X] handle ssh keys creation
+- [X] handle ssh keys addition
 
 ## future features
 
