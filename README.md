@@ -36,7 +36,23 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 ### bash
 
-The config file is just a config file, so you can do everything you want, the main use of this feature will be something like have TLP only installed on your laptops.
+The config file is just a config file, so you can do everything you want in different hosts or different package managers.
+
+The main use of this feature will be something like have TLP only installed on your laptops:
+
+```bash
+if [[ "$HOSTNAME" == "laptop" ]]; then
+    Pkg tlp
+    Pkg tlp-rdw
+    Pkg smartmontools
+
+    SystemDirectory /etc/tlp.d/
+
+    SystemdUnitSystemEnable tlp.service
+    SystemdUnitSystemMask systemd-rfkill.service
+    SystemdUnitSystemMask systemd-rfkill.socket
+fi
+```
 
 ## Features
 
