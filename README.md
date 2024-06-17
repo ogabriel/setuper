@@ -7,22 +7,26 @@ Aplication to handle everything related to your system and dotfiles!
 ### Functions
 
 - `User username`- creates the user and configures it, can be just used as `User $USER`
-    - --groups - list of groups that user shall be added
-    - --shell - user's shell
+    - `--groups` - list of groups that user shall be added
+    - `--shell` - user's shell
 - `Group groupname` - creates a group
 - `Pkg/Package packagename` - sets a package to be installed and managed
     - `--AUR/--aur` allows to specify the origin of the package
 - `SystemdUnitSystemEnable unitname` - enables a systemd system unit
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit
 - `SystemdUnitUserEnable unitname` -enables a system user unit
-- `SystemFile` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
-- `SystemFileFromTo` - same as SystemFile, but is used to rename the file from the name in your configs to a system name, mostly used if you're keeping configs for different systems
-- UserFile - links a user file or folder, basically this shall be used for dotfiles, like `UserFile .conf/nvim` or `UserFile .zsh`
-- UserFileFromTo - self explanatory
-- SSHGen/SSHGenKey - generates a ssh key for params
-    - --file - key file, like `.ssh/id_rsa_foobar`
-    - --comment - for github this is your email
-- SSHAdd/SSHAddKey - adds the key to your agent (idont know if this will world correctly)
+- `SystemFile file` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
+- `SystemFileFromTo from_file to_file` - same as SystemFile, but is used to rename the file from the name in your configs to a system name, mostly used if you're keeping configs for different systems
+- `SystemDirectory directory`
+- `SystemDirectoryFromTo from_directory to_directory`
+- `UserFile file` - links a user file or folder, basically this shall be used for dotfiles, like `UserFile .conf/nvim` or `UserFile .zsh`
+- `UserFileFromTo from_file to_file`
+- `UserDirectory directory`
+- `UserDirectoryFromTo from_directory to_directory`
+- `SSHGenKey` - generates a ssh key for params
+    - `--file` - key file, like `.ssh/id_rsa_foobar`
+    - `--comment` - for github this is your email
+- `SSHAddKey` - adds the key to your agent (idont know if this will world correctly)
 
 ### Execution order
 
