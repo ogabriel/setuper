@@ -16,13 +16,13 @@ Aplication to handle everything related to your system and dotfiles!
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit
 - `SystemdUnitUserEnable unitname` -enables a system user unit
 - `SystemFile file` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
-- `SystemFileFromTo from_file to_file` - same as SystemFile, but is used to rename the file from the name in your configs to a system name, mostly used if you're keeping configs for different systems
-- `SystemDirectory directory`
-- `SystemDirectoryFromTo from_directory to_directory`
-- `UserFile file` - links a user file or folder, basically this shall be used for dotfiles, like `UserFile .conf/nvim` or `UserFile .zsh`
-- `UserFileFromTo from_file to_file`
-- `UserDirectory directory`
-- `UserDirectoryFromTo from_directory to_directory`
+- `SystemFileFromTo from_file to_file` - same as above, but you can rename
+- `SystemDirectory directory` - copies a directory like `system/etc/sddm.conf.d` to `/etc/sddm.conf.d`
+- `SystemDirectoryFromTo from_directory to_directory` - same as above, but you can rename
+- `UserFile file` - links a user file, basically this shall be used for dotfiles, like `UserFile .zsh`
+- `UserFileFromTo from_file to_file` - same as above, but you can rename
+- `UserDirectory directory` - use it like `UserDirectory .conf/nvim`, so your nvim configs inside the folder `users/.config/nvim` will be linked to `~/.config/nvim`
+- `UserDirectoryFromTo from_directory to_directory` - same as above, but you can rename
 - `SSHGenKey` - generates a ssh key for params
     - `--file` - key file, like `.ssh/id_rsa_foobar`
     - `--comment` - for github this is your email
