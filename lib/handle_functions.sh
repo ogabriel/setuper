@@ -9,11 +9,13 @@ function HandleGroups() {
 
 function HandleUsers() {
     for ((i = 0; i < ${#users[@]}; i++)); do
+        local user_config
         readarray -d ' ' user_config <<<"${users[$i]}"
 
         for ((j = 0; j < ${#user_config[@]}; j++)); do
             if [[ ${user_config[j]} =~ --groups=.+ ]]; then
                 local groups=${user_config[j]#--groups=}
+                groups=${groups//,/}
                 groups=(${groups//,/ })
             elif [[ ${user_config[j]} =~ --shell=.+ ]]; then
                 local shell=${user_config[j]#--shell=}
