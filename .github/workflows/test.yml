@@ -19,3 +19,6 @@ jobs:
         ruby-version: '3.3'
         bundler-cache: true
         working-directory: ./tests
+
+    - name: run bashcov
+      run: bashcov setuper
