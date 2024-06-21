@@ -22,3 +22,4 @@ jobs:
 
     - name: run bashcov
       run: bundle exec bashcov setuper
+      working-directory: ./tests
