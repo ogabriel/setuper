@@ -1,11 +1,11 @@
 name: Test
 
-# on:
-#   pull_request:
-#     branches: ["master"]
-#     paths-ignore:
-#     - 'README.md'
-#     - LICENSE
+on:
+  pull_request:
+    branches: ["master"]
+    paths-ignore:
+    - 'README.md'
+    - LICENSE
 
 jobs:
   test:
@@ -13,3 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      path: test
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
