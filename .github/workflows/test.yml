@@ -13,8 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        path: ./tests
+
+    - name: Enter tests directory 
+      run: cd ./tests
 
     - uses: ruby/setup-ruby@v1
       with:
