@@ -9,7 +9,6 @@ function HandleGroups() {
 
 function HandleUsers() {
     for ((i = 0; i < ${#users[@]}; i++)); do
-        echo ${users[$i]}
         readarray -d ' ' user_config <<<"${users[$i]}"
 
         for ((j = 0; j < ${#user_config[@]}; j++)); do
