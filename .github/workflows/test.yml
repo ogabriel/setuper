@@ -10,12 +10,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./tests
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Enter tests directory 
-      run: cd ./tests
 
     - uses: ruby/setup-ruby@v1
       with:
