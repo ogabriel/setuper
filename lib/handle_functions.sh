@@ -262,6 +262,7 @@ function HandleUserDirectoriesFromTo() {
 
 function HandleSSHGenKeys() {
     for ((i = 0; i < ${#ssh_gen_keys[@]}; i++)); do
+        local gen_key_config
         readarray -d ' ' gen_key_config <<<"${ssh_gen_keys[$i]}"
 
         for ((j = 0; j < ${#gen_key_config[@]}; j++)); do
@@ -297,7 +298,7 @@ function HandleSSHGenKeys() {
         else
             if ! [[ -f $HOME/.ssh/id_$algo ]]; then
                 Info "Generating SSH key $algo"
-                ssh-keygen -t $algo 
+                ssh-keygen -t $algo
             fi
         fi
     done
