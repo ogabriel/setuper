@@ -141,6 +141,7 @@ function SystemCreateDirectories() {
 function HandleSystemFile() {
     local from_file=$1
     local to_file=$2
+    local chmod=$3
 
     if ! sudo test -f $to_file; then
         SystemCreateDirectories $to_file
@@ -152,17 +153,38 @@ function HandleSystemFile() {
             sudo cp $from_file $to_file
         fi
     fi
+
+    if [[ -n $chmod ]]; then
+        if [[ "$(stat -c %a $to_file)" != $chmod ]]; then
+            Info "Changing permissions of file $to_file to $chmod"
+            sudo chmod $chmod $to_file
+        fi
+    fi
 }
 
 function HandleSystemFiles() {
-    for to_file in ${system_files[*]}; do
-        HandleSystemFile $system_files_dir$to_file $to_file
+    for ((i = 0; i < ${#system_files[@]}; i++)); do
+        local system_file_config
+        readarray -d ' ' system_file_config <<<"${system_files[$i]}"
+
+        local from_file=$system_files_dir${system_file_config[0]}
+        local to_file=${system_file_config[0]}
+        local chmod=${system_file_config[1]}
+
+        HandleSystemFile $from_file $to_file $chmod
     done
 }
 
 function HandleSystemFilesFromTo() {
-    for ((i = 0; i < ${#system_files_from_to[@]}; i += 2)); do
-        HandleSystemFile $system_files_dir${system_files_from_to[i]} ${system_files_from_to[i + 1]}
+    for ((i = 0; i < ${#system_files_from_to[@]}; i++)); do
+        local system_file_config
+        readarray -d ' ' system_file_config <<<"${system_files_from_to[$i]}"
+
+        local from_file=$system_files_dir${system_file_config[0]}
+        local to_file=${system_file_config[1]}
+        local chmod=${system_file_config[2]}
+
+        HandleSystemFile $from_file $to_file $chmod
     done
 }
 
