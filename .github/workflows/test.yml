@@ -21,3 +21,6 @@ jobs:
       with:
         ruby-version: '3.3'
         bundler-cache: true
+
+    - name: bundle install
+      run: pwd; cd tests; pwd; bundle install
