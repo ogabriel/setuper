@@ -64,10 +64,20 @@ system_files_dir=$config_dir/system
 function SystemFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
+    local file=$@
     local from_file=$system_files_dir$1
 
     if [[ -f $from_file ]]; then
-        system_files+=($1)
+        shift
+        while [[ $# -gt 0 ]]; do
+            if [[ $1 =~ --chmod=.+ ]]; then
+                shift
+            else
+                Error "Invalid flag $1 for $FUNCNAME"
+            fi
+        done
+
+        system_files+=("$file")
     else
         Error "Invalid file $from_file"
     fi
@@ -76,10 +86,20 @@ function SystemFile() {
 function SystemFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
+    local file=$@
     local from_file=$system_files_dir$1
 
     if [[ -f $from_file ]]; then
-        system_files_from_to+=($1 $2)
+        shift
+        while [[ $# -gt 0 ]]; do
+            if [[ $1 =~ --chmod=.+ ]]; then
+                shift
+            else
+                Error "Invalid flag $1 for $FUNCNAME"
+            fi
+        done
+
+        system_files_from_to+=("$file")
     else
         Error "Invalid file $from_file"
     fi
@@ -88,10 +108,20 @@ function SystemFileFromTo() {
 function SystemDirectory() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
+    local dir=$@
     local from_dir=$system_files_dir$1
 
     if [[ -d $from_dir ]]; then
-        system_directories+=($1)
+        shift
+        while [[ $# -gt 0 ]]; do
+            if [[ $1 =~ --chmod=.+ ]]; then
+                shift
+            else
+                Error "Invalid flag $1 for $FUNCNAME"
+            fi
+        done
+
+        system_directories+=("$dir")
     else
         Error "Invalid directory $from_dir"
     fi
@@ -100,10 +130,20 @@ function SystemDirectory() {
 function SystemDirectoryFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
 
+    local dir=$@
     local from_dir=$system_files_dir$1
 
     if [[ -d $from_dir ]]; then
-        system_directories_from_to+=("$1 $2")
+        shift
+        while [[ $# -gt 0 ]]; do
+            if [[ $1 =~ --chmod=.+ ]]; then
+                shift
+            else
+                Error "Invalid flag $1 for $FUNCNAME"
+            fi
+        done
+
+        system_directories_from_to+=("$dir")
     else
         Error "Invalid directory $from_dir"
     fi
