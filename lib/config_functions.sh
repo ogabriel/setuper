@@ -66,6 +66,10 @@ function Package() {
         else
             Error "Invalid package source file $sourced_file"
         fi
+    elif [[ $2 == '--flatpak' ]]; then
+        ValidateExactFunctionParams 2 $# $FUNCNAME
+
+        flatpak_packages+=($1)
     else
         packages+=($1)
     fi

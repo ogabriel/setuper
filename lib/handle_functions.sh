@@ -167,6 +167,39 @@ function HandleSourcedPackages() {
 
 }
 
+function HandleFlatpakPackages() {
+    if [[ ${#flatpak_packages[*]} -gt 0 ]]; then
+        if ! command -v flatpak; then
+            case $distro in
+            arch)
+                Info "Installing flatpak with pacman"
+                sudo pacman -S --noconfirm flatpak
+                ;;
+            debian)
+                Info "Installing flatpak with apt"
+                sudo apt-get install -y flatpak
+                ;;
+            *)
+                Error "Installer not found for distro: $distro, could not install flatpak"
+                ;;
+            esac
+
+            Info "Flatpak installed, restart your computer to install the flatpak packages"
+        else
+            for ((i = 0; i < ${#flatpak_packages[*]}; i++)); do
+                if flatpak list | grep ${flatpak_packages[i]} &>/dev/null; then
+                    unset 'flatpak_packages[$i]'
+                fi
+            done
+
+            if [[ ${#flatpak_packages[*]} -gt 0 ]]; then
+                Info "Installing flatpak packages"
+                flatpak install --assumeyes --noninteractive flathub ${flatpak_packages[*]}
+            fi
+        fi
+    fi
+}
+
 function HandleSystemdUnits() {
     if [[ ${#systemd_unit_system_enable[*]} -gt 0 ]] ||
         [[ ${#systemd_unit_user_enable[*]} -gt 0 ]] ||
