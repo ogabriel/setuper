@@ -41,11 +41,19 @@ function Package() {
     if [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
-        aur_packages+=($1)
+        if [[ $distro == 'arch' ]]; then
+            aur_packages+=($1)
+        else
+            Error "AUR packages are only supported on Arch Linux"
+        fi
     elif [[ $2 == '--group' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
-        group_packages+=($1)
+        if [[ $distro == 'arch' ]]; then
+            group_packages+=($1)
+        else
+            Error "Group packages are only supported on Arch Linux"
+        fi
     else
         packages+=($1)
     fi
