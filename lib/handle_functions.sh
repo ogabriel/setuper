@@ -102,7 +102,7 @@ function HandlePackages() {
             fi
 
             Info "Installing packages with yay"
-            yay -S --noconfirm --needed ${aur_packages[*]}
+            yay -S --noconfirm --needed ${aur_packages[*]} ${packages[*]}
             ;;
         esac
     fi
