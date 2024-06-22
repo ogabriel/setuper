@@ -90,7 +90,7 @@ function HandlePackages() {
         else
             local installer=pacman
         fi
-    else
+    elif [[ $distro == 'debian' ]]; then
         local installer=apt
     fi
 
@@ -115,8 +115,12 @@ function HandlePackages() {
             yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
             ;;
         apt)
+            Info "Installing packages with apt"
             sudo apt-get update
             sudo apt-get install -y ${packages[*]}
+            ;;
+        *)
+            Error "Installer not found for distro: $distro"
             ;;
         esac
     fi
