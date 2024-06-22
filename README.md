@@ -73,6 +73,7 @@ fi
 
 ### Future
 
+- [ ] add unit tests - right now the project only works through hope
 - [ ] strict mode for more control over system
 - [ ] support for sourcing a file to install a package (ex: .deb files)
 - [ ] enable support for asdf
