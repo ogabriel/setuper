@@ -58,7 +58,6 @@ fi
 
 ## Features
 
-### TODO
 - [X] handle users
 - [X] handle user's groups
 - [X] handle packages
@@ -66,11 +65,14 @@ fi
 - [X] handle systemd units
 - [X] handle system files
 - [X] handle system directories
-- [ ] handle properties for system files
+- [X] handle properties for system files
 - [X] handle user files
 - [X] handle system directories
 - [X] handle ssh keys creation
 - [X] handle ssh keys addition
+- [X] support for other package managers from other distros
+    - pacman/yay
+    - apt-get
 
 ### Future
 
@@ -79,7 +81,6 @@ fi
 - [ ] support for sourcing a file to install a package (ex: .deb files)
 - [ ] enable support for asdf
 - [ ] support for flatpak
-- [ ] support for other package managers from other distros
 - [ ] allow to be run as root
 - [ ] community configs to certain hardware (ex: nvidia)
 - [ ] add a way to use transactions/checksums to avoid doing too much work
