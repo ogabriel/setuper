@@ -59,9 +59,20 @@ function HandlePackagesRemoval() {
         fi
     done
 
-    if ! [[ ${#packages_to_remove[*]} -eq 0 ]]; then
-        Info "Removing packages with pacman"
-        sudo pacman -Rns --noconfirm ${packages_to_remove[*]}
+    if [[ ${#packages_to_remove[*]} -gt 0 ]]; then
+        case $distro in
+        arch)
+            Info "Removing packages with pacman"
+            sudo pacman -Rns --noconfirm ${packages_to_remove[*]}
+            ;;
+        debian)
+            Info "Removing packages with apt"
+            sudo apt-get remove -y ${packages_to_remove[*]}
+            ;;
+        *)
+            Error "Installer not found for distro: $distro"
+            ;;
+        esac
     fi
 }
 
