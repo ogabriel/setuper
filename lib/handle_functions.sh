@@ -143,7 +143,7 @@ function HandleSourcedPackages() {
         readarray -d ' ' sourced_package_config <<<"${sourced_packages[$i]}"
 
         local package=${sourced_package_config[0]}
-        local file=$sourced_package_dir${sourced_package_config[1]}
+        local file=$sourced_package_dir${sourced_package_config[1]#--source=}
 
         case $distro in
         arch)
