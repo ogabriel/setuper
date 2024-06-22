@@ -137,6 +137,36 @@ function HandlePackages() {
     fi
 }
 
+function HandleSourcedPackages() {
+    for ((i = 0; i < ${#sourced_packages[@]}; i++)); do
+        local sourced_package_config
+        readarray -d ' ' sourced_package_config <<<"${sourced_packages[$i]}"
+
+        local package=${sourced_package_config[0]}
+        local file=$sourced_package_dir${sourced_package_config[1]}
+
+        case $distro in
+        arch)
+            if ! pacman -Q $package &>/dev/null; then
+                Info "Installing sourced package $package with pacman"
+                sudo pacman -Sy --noconfirm archlinux-keyring
+                sudo pacman -U --noconfirm $file
+            fi
+            ;;
+        debian)
+            if ! dpkg -l $package &>/dev/null; then
+                Info "Installing sourced package $package with dpkg"
+                sudo dpkg -i $file
+            fi
+            ;;
+        *)
+            Error "Installer not found for distro: $distro"
+            ;;
+        esac
+    done
+
+}
+
 function HandleSystemdUnits() {
     if [[ ${#systemd_unit_system_enable[*]} -gt 0 ]] ||
         [[ ${#systemd_unit_user_enable[*]} -gt 0 ]] ||

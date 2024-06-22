@@ -12,6 +12,7 @@ source $lib_dir/handler_functions.sh
 
 HandlePackagesRemoval
 HandlePackages
+HandleSourcedPackages
 
 HandleSystemFiles
 HandleSystemFilesFromTo

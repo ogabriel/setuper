@@ -35,6 +35,8 @@ function RemovePkg() {
     RemovePackage $@
 }
 
+sourced_packages_dir=$config_dir/packages
+
 function Package() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
@@ -53,6 +55,16 @@ function Package() {
             group_packages+=($1)
         else
             Error "Group packages are only supported on Arch Linux"
+        fi
+    elif [[ $2 =~ --source=.* ]]; then
+        ValidateExactFunctionParams 2 $# $FUNCNAME
+
+        local sourced_file=$sourced_packages_dir$2
+
+        if [[ -f $sourced_file ]]; then
+            sourced_packages+=($1)
+        else
+            Error "Invalid package source file $sourced_file"
         fi
     else
         packages+=($1)
