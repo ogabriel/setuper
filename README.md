@@ -12,7 +12,8 @@ Aplication to handle everything related to your system and dotfiles!
 - `Group groupname` - creates a group
 - `Pkg/Package packagename` - sets a package to be installed and managed
     - `--AUR/--aur` allows to specify the origin of the package
-    - `--group` - group packages
+    - `--group` - group packages for arch linux
+    - `--flatpak` - flatpak packages
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
 - `RemovePkg/RemovePackage packagename` - removes said package
 - `SystemdUnitSystemEnable unitname` - enables a systemd system unit
