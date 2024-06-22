@@ -79,6 +79,12 @@ function Pkg() {
     Package $@
 }
 
+function ASDFPlugin() {
+    ValidateFunctionParams 1 $# $FUNCNAME
+
+    asdf_plugins+=($1)
+}
+
 function SystemdUnitSystemEnable() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
