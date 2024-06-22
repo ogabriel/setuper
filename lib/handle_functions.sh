@@ -84,10 +84,14 @@ function HandlePackages() {
         fi
     done
 
-    if [[ ${#aur_packages[*]} -gt 0 ]]; then
-        local installer=yay
+    if [[ $distro == 'arch' ]]; then
+        if [[ ${#aur_packages[*]} -gt 0 ]]; then
+            local installer=yay
+        else
+            local installer=pacman
+        fi
     else
-        local installer=pacman
+        local installer=apt
     fi
 
     if [[ ${#packages[*]} -gt 0 ]] ||
@@ -109,6 +113,10 @@ function HandlePackages() {
 
             Info "Installing packages with yay"
             yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
+            ;;
+        apt)
+            sudo apt-get update
+            sudo apt-get install -y ${packages[*]}
             ;;
         esac
     fi
