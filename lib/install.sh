@@ -2,6 +2,7 @@ source $lib_dir/helper_functions.sh
 
 CheckConfig
 CheckPermissons
+DefineDistro
 
 source $lib_dir/config_functions.sh
 

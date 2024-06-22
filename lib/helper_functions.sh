@@ -35,6 +35,15 @@ function CheckPermissons() {
     fi
 }
 
+function DefineDistro() {
+    if [[ -f /etc/os-release ]]; then
+        distro=$(grep -oP '^ID=\K(\w+)' /etc/os-release)
+    else
+        Error "No /etc/os-release file found, Could not specify distro"
+    fi
+
+}
+
 function ValidateFunctionParams() {
     if [[ $2 -lt $1 ]]; then
         if [[ $1 -eq 1 ]]; then
