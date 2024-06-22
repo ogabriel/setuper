@@ -42,6 +42,10 @@ function Package() {
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         aur_packages+=($1)
+    elif [[ $2 == '--group' ]]; then
+        ValidateExactFunctionParams 2 $# $FUNCNAME
+
+        group_packages+=($1)
     else
         packages+=($1)
     fi

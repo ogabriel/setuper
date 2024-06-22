@@ -78,21 +78,27 @@ function HandlePackages() {
         fi
     done
 
-    if ! [[ ${#aur_packages[*]} -eq 0 ]]; then
-        packages+=(${aur_packages[*]})
+    for index in ${!group_packages[*]}; do
+        if pacman -Qg ${group_packages[index]} &>/dev/null; then
+            unset 'group_packages[$index]'
+        fi
+    done
 
+    if [[ ${#aur_packages[*]} -gt 0 ]]; then
         local installer=yay
     else
         local installer=pacman
     fi
 
-    if ! [[ ${#packages[*]} -eq 0 ]]; then
+    if [[ ${#packages[*]} -gt 0 ]] ||
+        [[ ${#group_packages[*]} -gt 0 ]] ||
+        [[ ${#aur_packages[*]} -gt 0 ]]; then
+
         case $installer in
         pacman)
             Info "Installing packages with pacman"
             sudo pacman -Sy --noconfirm archlinux-keyring
-            sudo pacman -S --noconfirm --needed ${packages[*]}
-
+            sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
             ;;
         yay)
             sudo pacman -Sy --noconfirm archlinux-keyring
@@ -102,7 +108,7 @@ function HandlePackages() {
             fi
 
             Info "Installing packages with yay"
-            yay -S --noconfirm --needed ${aur_packages[*]} ${packages[*]}
+            yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
             ;;
         esac
     fi

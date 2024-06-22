@@ -12,6 +12,7 @@ Aplication to handle everything related to your system and dotfiles!
 - `Group groupname` - creates a group
 - `Pkg/Package packagename` - sets a package to be installed and managed
     - `--AUR/--aur` allows to specify the origin of the package
+    - `--group` - group packages
 - `RemovePkg/RemovePackage packagename` - removes said package
 - `SystemdUnitSystemEnable unitname` - enables a systemd system unit
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit
