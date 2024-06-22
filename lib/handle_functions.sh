@@ -170,21 +170,9 @@ function HandleSourcedPackages() {
 function HandleFlatpakPackages() {
     if [[ ${#flatpak_packages[*]} -gt 0 ]]; then
         if ! command -v flatpak; then
-            case $distro in
-            arch)
-                Info "Installing flatpak with pacman"
-                sudo pacman -S --noconfirm flatpak
-                ;;
-            debian)
-                Info "Installing flatpak with apt"
-                sudo apt-get install -y flatpak
-                ;;
-            *)
-                Error "Installer not found for distro: $distro, could not install flatpak"
-                ;;
-            esac
+            packages+=('flatpak')
 
-            Info "Flatpak installed, restart your computer to install the flatpak packages"
+            Info "Flatpak will be installed, restart your computer after setuper runs to install flatpak packages"
         else
             for ((i = 0; i < ${#flatpak_packages[*]}; i++)); do
                 if flatpak list | grep ${flatpak_packages[i]} &>/dev/null; then
