@@ -25,6 +25,16 @@ function Group() {
     groups+=($1)
 }
 
+function RemovePackage() {
+    ValidateFunctionParams 1 $# $FUNCNAME
+
+    packages_to_remove+=($1)
+}
+
+function RemovePkg() {
+    RemovePackage $@
+}
+
 function Package() {
     ValidateFunctionParams 1 $# $FUNCNAME
 

@@ -52,6 +52,19 @@ function HandleUsers() {
     done
 }
 
+function HandlePackagesRemoval() {
+    for index in ${!packages_to_remove[*]}; do
+        if pacman -Q ${packages_to_remove[index]} &>/dev/null; then
+            unset 'packages_to_remove[$index]'
+        fi
+    done
+
+    if ! [[ ${#packages_to_remove[*]} -eq 0 ]]; then
+        Info "Removing packages with pacman"
+        sudo pacman -Rns --noconfirm ${packages_to_remove[*]}
+    fi
+}
+
 function HandlePackages() {
     for index in ${!packages[*]}; do
         if pacman -Q ${packages[index]} &>/dev/null; then

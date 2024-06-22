@@ -9,6 +9,7 @@ LoadConfig
 
 source $lib_dir/handler_functions.sh
 
+HandlePackagesRemoval
 HandlePackages
 
 HandleSystemFiles
