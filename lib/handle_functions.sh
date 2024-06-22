@@ -197,6 +197,14 @@ function HandleSystemdUnits() {
     fi
 }
 
+function ParseChmod() {
+    local chmod=$1
+
+    chmod=${chmod//\ /}
+
+    echo $chmod_parsed
+}
+
 function SystemCreateDirectories() {
     local directories=(${1//\// })
     local current="/"
@@ -241,7 +249,7 @@ function HandleSystemFiles() {
 
         local from_file=$system_files_dir${system_file_config[0]}
         local to_file=${system_file_config[0]}
-        local chmod=${system_file_config[1]}
+        local chmod=${system_file_config[1]#--chmod=}
 
         HandleSystemFile $from_file $to_file $chmod
     done
@@ -254,7 +262,7 @@ function HandleSystemFilesFromTo() {
 
         local from_file=$system_files_dir${system_file_config[0]}
         local to_file=${system_file_config[1]}
-        local chmod=${system_file_config[2]}
+        local chmod=${system_file_config[2]#--chmod=}
 
         HandleSystemFile $from_file $to_file $chmod
     done
@@ -291,7 +299,7 @@ function HandleSystemDirectories() {
 
         local from_dir=$system_files_dir${system_directory_config[0]}
         local to_dir=${system_directory_config[0]}
-        local chmod=${system_directory_config[1]}
+        local chmod=${system_directory_config[1]#--chmod=}
 
         HandleSystemDirectory $from_dir $to_dir $chmod
     done
@@ -304,7 +312,7 @@ function HandleSystemDirectoriesFromTo() {
 
         local from_dir=$system_files_dir${system_directory_config[0]}
         local to_dir=${system_directory_config[1]}
-        local chmod=${system_directory_config[2]}
+        local chmod=${system_directory_config[2]#--chmod=}
 
         HandleSystemDirectory $from_dir $to_dir $chmod
     done
