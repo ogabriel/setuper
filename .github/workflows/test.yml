@@ -22,5 +22,8 @@ jobs:
         ruby-version: '3.3'
         bundler-cache: true
 
+    - name: test
+      run: cat /etc/os-release
+
     - name: run bashcov
       run: bundle exec bashcov ./setuper
