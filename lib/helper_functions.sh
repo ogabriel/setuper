@@ -37,7 +37,9 @@ function CheckPermissons() {
 
 function DefineDistro() {
     if [[ -f /etc/os-release ]]; then
-        distro=$(grep -oP '^ID_LIKE=\K(\w+)' /etc/os-release || grep -oP '^ID=\K(\w+)' /etc/os-release)
+        distro_id=$(grep -oP '^ID=\K(\w+)' /etc/os-release)
+        distro=$(grep -oP '^ID_LIKE=\K(\w+)' /etc/os-release) || echo $distro_id
+        distro_version=$(grep -oP '^VERSION_ID=\K(.+)' /etc/os-release)
     else
         Error "No /etc/os-release file found, Could not specify distro"
     fi
