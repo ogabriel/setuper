@@ -74,12 +74,12 @@ fi
 - [X] support for other package managers from other distros
     - pacman/yay
     - apt-get
+- [X] support for the user sourcing a file to install a package (ex: .deb files)
 
 ### Future
 
 - [ ] add unit tests - right now the project only works through hope
 - [ ] strict mode for more control over system
-- [ ] support for sourcing a file to install a package (ex: .deb files)
 - [ ] enable support for asdf
 - [ ] support for flatpak
 - [ ] allow to be run as root
