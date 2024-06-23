@@ -12,8 +12,10 @@ source $lib_dir/handler_functions.sh
 
 HandlePackagesRemoval
 HandleFlatpakPackages
+HandlePreASDFPlugins
 HandlePackages
 HandleSourcedPackages
+HandlePostASDFPlugins
 
 HandleSystemFiles
 HandleSystemFilesFromTo
