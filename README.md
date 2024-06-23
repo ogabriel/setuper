@@ -2,6 +2,10 @@
 
 Aplication to handle everything related to your system and dotfiles!
 
+## Support
+
+Most arch and debian based distros should work fine.
+
 ## Configuration
 
 ### Functions
@@ -31,6 +35,7 @@ Aplication to handle everything related to your system and dotfiles!
     - `--file` - key file, like `id_rsa_foobar`
     - `--comment` - comment for the key, for github this is your email
 - `SSHAddKey` - adds the key to your agent (idont know if this will world correctly)
+- `ASDFPlugin pluginname` - allows to install asdf automatically on your distro and handle specific dependencies for each plugin - each language has its specifc dependencies for each language and for each distro, so this function handles all that for you
 
 ### Execution order
 
@@ -77,6 +82,7 @@ fi
     - apt-get
 - [X] support for the user sourcing a file to install a package (ex: .deb files)
 - [X] support for flatpak packages
+- [X] support for asdf plugins
 
 ### Future
 
