@@ -43,9 +43,11 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 <!-- TODO: put order here -->
 
-### bash
+### Examples of config
 
-The config file is just a config file, so you can do everything you want in different hosts or different package managers.
+The config file is just a bash file, so you can do everything you want in different hosts or different package managers.
+
+#### TLP
 
 The main use of this feature will be something like have TLP only installed on your laptops:
 
@@ -61,6 +63,56 @@ if [[ "$HOSTNAME" == "laptop" ]]; then
     SystemdUnitSystemMask systemd-rfkill.service
     SystemdUnitSystemMask systemd-rfkill.socket
 fi
+```
+
+#### Docker
+
+Some packages require some configuration that are not done automatically, like docker, that needs you to install the package, add your user to the group and then enable the service
+
+```bash
+Pkg docker
+
+User $USER --groups=wheel,docker
+
+SystemdUnitSystemEnable docker.service
+```
+
+#### Different window managers
+
+Sometimes you want to try out a new WM only on your personal PC, so you can do something like this:
+
+```bash
+case $HOSTNAME in
+my_work_PC)
+    window_manager=sway
+    ;;
+my_personal_PC)
+    window_manager=hyprland
+    ;;
+esac
+
+case $window_manager in
+sway)
+    RemovePkg xdg-desktop-portal-hyprland
+    RemovePkg xdg-desktop-portal-gnome
+    RemovePkg xdg-desktop-portal-kde
+
+    Pkg sway
+    Pkg xdg-desktop-portal-wlr
+
+    UserDirectory .config/sway
+    ;;
+hyprland)
+    RemovePkg xdg-desktop-portal-wlr
+    RemovePkg xdg-desktop-portal-gnome
+    RemovePkg xdg-desktop-portal-kde
+
+    Pkg hyprland
+    Pkg xdg-desktop-portal-hyprland
+
+    UserDirectory .config/hypr
+    ;;
+esac
 ```
 
 ## Features
