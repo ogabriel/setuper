@@ -115,6 +115,23 @@ hyprland)
 esac
 ```
 
+### Manage configuration
+
+It's recommended to use `setuper` inside a git repository
+
+#### dotfiles
+
+If you already has a dotfiles repository you can add it to the `setuper` repository in three ways:
+
+- git submodules - you can track your dotfiles changes inside a submodule, it may cause some headaches, as submodules are kinda hard to manage
+    - `git submodule add git@github.com:myuser/dotfiles.git user`
+- git subtree - it's more flexible then submodules
+    - `git remote add dotfiles-remote git@github.com:myuser/dotfiles.git`
+    - `git subtree add --prefix user dotfiles-remote main`
+- .gitignore - just clone your dotfiles repository and add it to your .gitignore
+    - `git clone git@github.com:myuser/dotfiles.git user`
+    - `echo user >> .gitignore`
+
 ## Features
 
 - [X] handle users
