@@ -2,5 +2,5 @@ Package: setuper
 Version: 0.1.0
 Maintainer: Gabriel <gabrieloliver8991@gmail.com>
 Architecture: all
-Description: A package to manage and setup your system and user environment
+Description: Manage and setup your system and user environment
 Depends: bash, grep, apt
