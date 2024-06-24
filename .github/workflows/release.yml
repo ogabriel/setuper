@@ -19,7 +19,7 @@ jobs:
         mkdir setuper_${{ github.ref_name }}/usr
         mkdir setuper_${{ github.ref_name }}/usr/lib/
         mkdir setuper_${{ github.ref_name }}/usr/bin/
-        mv build/debian_control setuper_${{ github.ref_name }}/DEBIAN/control
+        mv build/debian/control setuper_${{ github.ref_name }}/DEBIAN/control
         mv setuper setuper_${{ github.ref_name }}/usr/bin/
         mv lib/ setuper_${{ github.ref_name }}/usr/lib/setuper
         dpkg-deb --build setuper_${{ github.ref_name }}
