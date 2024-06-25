@@ -6,6 +6,10 @@ Aplication to handle everything related to your system and dotfiles!
 
 Most arch and debian based distros should work fine.
 
+## Instalation
+
+Go to the release page and download the debian or arch package.
+
 ## Configuration
 
 ### Functions
