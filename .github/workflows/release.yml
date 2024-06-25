@@ -42,11 +42,9 @@ jobs:
     - name: Build arch
       run: |
         mkdir -p ./build/arch/src
-        mkdir -p ./build/arch/src/lib
-        cp setuper ./build/arch/src
-        cp -r lib/*.sh ./build/arch/src/lib
+        cp ./setuper ./build/arch/src/
+        cp -r ./lib/ ./build/arch/src/
         cd ./build/arch
-        ls -la
 
         echo "Setup user"
         useradd --no-create-home build
@@ -56,11 +54,6 @@ jobs:
 
         echo "Setting permissions for everyone"
         chmod -R 777 ./
-
-        echo "Switching to build user"
-        su build
-
-        echo "Current user is: $(whoami)"
 
         echo "Building package"
         sudo -u build makepkg
