@@ -31,6 +31,10 @@ jobs:
         files: setuper_${{ github.ref_name }}.deb
   arch:
     runs-on: ubuntu-latest
+    container:
+      image: archlinux:base-devel
+      volumes:
+        - ./build/arch:/build
 
     steps:
     - uses: actions/checkout@v2
@@ -39,7 +43,28 @@ jobs:
       run: |
         cp setuper ./build/arch/
         cp -r lib/ ./build/arch/
-        docker run --rm --volume ./build/arch:/build archlinux:latest /bin/bash -c "/build/build.sh"
+        echo "Entering build directory"
+        cd /build
+
+        echo "Setup user"
+        useradd --no-create-home build
+
+        echo "show passwd"
+        cat /etc/passwd
+
+        echo "Setting permissions"
+        chown -R build:build /build
+
+        echo "Setting permissions for everyone"
+        chmod -R 777 /build
+
+        echo "Switching to build user"
+        su build
+
+        echo "Current user is: $(whoami)"
+
+        echo "Building package"
+        makepkg
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
