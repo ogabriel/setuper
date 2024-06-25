@@ -29,12 +29,12 @@ function RemovePackage() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
     case $distro in
-    'arch')
+    arch)
         if [[ pacman -Q $1 &>/dev/null ]]; then
             packages_to_remove+=($1)
         fi
         ;;
-    'debian')
+    debian)
         if [[ dpkg -l $1 &>/dev/null ]]; then
             packages_to_remove+=($1)
         fi
