@@ -41,6 +41,7 @@ jobs:
 
     - name: Build arch
       run: |
+        mkdir -p ./build/arch/src
         cp setuper ./build/arch/src
         cp -r lib/*.sh ./build/arch/src
         echo "Entering build directory"
