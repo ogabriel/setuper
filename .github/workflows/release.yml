@@ -37,4 +37,15 @@ jobs:
 
     - name: Build arch
       run: |
-          docker run --rm --volume $(pwd):/setuper --workdir /setuper archlinux:latest /bin/bash -c "cat /etc/os-release"
+        mkdir /setuper
+        mkdir /setuper/src
+        cp build/arch/PKGBUILD /setuper/src/
+        cp setuper /setuper/src/
+        cp -r lib/ /setuper/src/
+        docker run --rm --volume $(pwd):/setuper --workdir /setuper archlinux:latest /bin/bash -c "/build/arch/build.sh"
+
+    - name: Upload arch
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: /setuper/setuper_${{ github.ref_name }}-1-any.pkg.tar.zst
