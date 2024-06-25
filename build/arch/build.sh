@@ -15,5 +15,8 @@ chown -R build:build /build
 echo "Setting permissions for everyone"
 chmod -R 777 /build
 
-echo "Build package"
-su build -c "makepkg"
+echo "Switching to build user"
+su build
+
+echo "Building package"
+makepkg
