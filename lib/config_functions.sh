@@ -258,7 +258,7 @@ function UserFileFromTo() {
     local from_file=$user_files_dir$1
 
     if [[ -f $from_file ]]; then
-        user_files_from_to+=($1 $2)
+        user_files_from_to+=("$1 $2")
     else
         Error "Invalid file $from_file"
     fi
