@@ -7,7 +7,7 @@ echo "Entering build directory"
 cd /build
 
 echo "Setup user"
-useradd --no-create-home --shell=/bin/false build
+useradd --no-create-home build
 
 echo "Setting permissions"
 chown -R build:build /build
@@ -17,6 +17,8 @@ chmod -R 777 /build
 
 echo "Switching to build user"
 su build
+
+echo "Current user is: $(whoami)"
 
 echo "Building package"
 makepkg
