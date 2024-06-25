@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Building package"
 pacman -Sy base-devel --noconfirm --needed
 
@@ -8,6 +10,9 @@ cd /build
 
 echo "Setup user"
 useradd --no-create-home build
+
+echo "show passwd"
+cat /etc/passwd
 
 echo "Setting permissions"
 chown -R build:build /build
