@@ -60,13 +60,7 @@ jobs:
 
         ls -la
 
-    - name: Parse version
-      id: parse_version
-      run: |
-          PARSED_VERSION=${GITHUB_REF_NAME#v}
-          echo "PARSED_VERSION=${PARSED_VERSION}" >> $GITHUB_ENV
-
     - name: Upload arch
       uses: softprops/action-gh-release@v2
       with:
-        files: ./build/arch/setuper_${{PARSED_VERSION}}-1-any.pkg.tar.zst
+        files: ./build/arch/setuper_v${{PARSED_VERSION}}-1-any.pkg.tar.zst
