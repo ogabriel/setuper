@@ -63,4 +63,4 @@ jobs:
     - name: Upload arch
       uses: softprops/action-gh-release@v2
       with:
-        files: ./build/arch/setuper_${GITHUB_REF_NAME#v}-1-any.pkg.tar.zst
+        files: ./build/arch/setuper_${{GITHUB_REF_NAME#v}}-1-any.pkg.tar.zst
