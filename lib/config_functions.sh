@@ -52,13 +52,13 @@ function RemovePkg() {
 sourced_packages_dir=$config_dir/packages
 
 function Package() {
-    ValidateFunctionParams 1 $# $FUNCNAME
-
     if [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            aur_packages+=($1)
+            if [[ pacman -Q $1 &>/dev/null ]]; then
+                aur_packages+=($1)
+            fi
         else
             Error "AUR packages are only supported on Arch Linux"
         fi
@@ -66,7 +66,9 @@ function Package() {
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            group_packages+=($1)
+            if [[ pacman -Qg $1 &>/dev/null ]]; then
+                group_packages+=($1)
+            fi
         else
             Error "Group packages are only supported on Arch Linux"
         fi
@@ -76,7 +78,20 @@ function Package() {
         local sourced_file=$sourced_packages_dir$2
 
         if [[ -f $sourced_file ]]; then
-            sourced_packages+=($1)
+            case $distro in
+            arch)
+                if [[ pacman -Q $1 &>/dev/null ]]; then
+                    sourced_packages+=($1)
+                fi
+                ;;
+            debian)
+                if [[ dpkg -l $1 &>/dev/null ]]; then
+                    sourced_packages+=($1)
+                fi
+            *)
+                Error "Could not check if package $1 is installed on $distro"
+                ;;
+            esac
         else
             Error "Invalid package source file $sourced_file"
         fi
@@ -85,7 +100,23 @@ function Package() {
 
         flatpak_packages+=($1)
     else
-        packages+=($1)
+        ValidateFunctionParams 1 $# $FUNCNAME
+
+        case $distro in
+        arch)
+            if [[ pacman -Q $1 &>/dev/null ]]; then
+                packages+=($1)
+            fi
+            ;;
+        debian)
+            if [[ dpkg -l $1 &>/dev/null ]]; then
+                packages+=($1)
+            fi
+            ;;
+        *)
+            Error "Could not check if package $1 is installed on $distro"
+            ;;
+        esac
     fi
 }
 

@@ -71,24 +71,6 @@ function HandlePackagesRemoval() {
 }
 
 function HandlePackages() {
-    for index in ${!packages[*]}; do
-        if pacman -Q ${packages[index]} &>/dev/null; then
-            unset 'packages[$index]'
-        fi
-    done
-
-    for index in ${!aur_packages[*]}; do
-        if pacman -Q ${aur_packages[index]} &>/dev/null; then
-            unset 'aur_packages[$index]'
-        fi
-    done
-
-    for index in ${!group_packages[*]}; do
-        if pacman -Qg ${group_packages[index]} &>/dev/null; then
-            unset 'group_packages[$index]'
-        fi
-    done
-
     if [[ $distro == 'arch' ]]; then
         if [[ ${#aur_packages[*]} -gt 0 ]]; then
             local installer=yay
@@ -141,17 +123,12 @@ function HandleSourcedPackages() {
 
         case $distro in
         arch)
-            if ! pacman -Q $package &>/dev/null; then
-                Info "Installing sourced package $package with pacman"
-                sudo pacman -Sy --noconfirm archlinux-keyring
-                sudo pacman -U --noconfirm $file
-            fi
+            Info "Installing sourced package $package with pacman"
+            sudo pacman -U --noconfirm $file
             ;;
         debian)
-            if ! dpkg -l $package &>/dev/null; then
-                Info "Installing sourced package $package with dpkg"
-                sudo dpkg -i $file
-            fi
+            Info "Installing sourced package $package with dpkg"
+            sudo dpkg -i $file
             ;;
         *)
             Error "Installer not found for distro: $distro"
