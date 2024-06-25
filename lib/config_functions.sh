@@ -56,7 +56,7 @@ function Package() {
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            if pacman -Q $1 &>/dev/null; then
+            if ! pacman -Q $1 &>/dev/null; then
                 aur_packages+=($1)
             fi
         else
@@ -66,7 +66,7 @@ function Package() {
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            if pacman -Qg $1 &>/dev/null; then
+            if ! pacman -Qg $1 &>/dev/null; then
                 group_packages+=($1)
             fi
         else
@@ -80,12 +80,12 @@ function Package() {
         if [[ -f $file ]]; then
             case $distro in
             arch)
-                if pacman -Q $1 &>/dev/null; then
+                if ! pacman -Q $1 &>/dev/null; then
                     sourced_packages+=("$1 $2")
                 fi
                 ;;
             debian)
-                if dpkg -l $1 &>/dev/null; then
+                if ! dpkg -l $1 &>/dev/null; then
                     sourced_packages+=("$1 $2")
                 fi
                 ;;
@@ -105,12 +105,12 @@ function Package() {
 
         case $distro in
         arch)
-            if pacman -Q $1 &>/dev/null; then
+            if ! pacman -Q $1 &>/dev/null; then
                 packages+=($1)
             fi
             ;;
         debian)
-            if dpkg -l $1 &>/dev/null; then
+            if ! dpkg -l $1 &>/dev/null; then
                 packages+=($1)
             fi
             ;;
