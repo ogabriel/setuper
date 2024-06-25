@@ -41,8 +41,8 @@ jobs:
 
     - name: Build arch
       run: |
-        cp setuper ./build/arch/
-        cp -r lib/ ./build/arch/
+        cp setuper ./build/arch/src
+        cp -r lib/*.sh ./build/arch/src
         echo "Entering build directory"
         cd /build
 
@@ -53,10 +53,10 @@ jobs:
         cat /etc/passwd
 
         echo "Setting permissions"
-        chown -R build:build /build
+        chown -R build:build ./build
 
         echo "Setting permissions for everyone"
-        chmod -R 777 /build
+        chmod -R 777 ./build
 
         echo "Switching to build user"
         su build
