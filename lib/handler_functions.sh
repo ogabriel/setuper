@@ -474,13 +474,13 @@ function HandleUserFile() {
 
 function HandleUserFiles() {
     for file in ${user_files[*]}; do
-        HandleUserFile $user_files_dir$file $HOME$file
+        HandleUserFile $user_files_dir$file $HOME/$file
     done
 }
 
 function HandleUserFilesFromTo() {
     for ((i = 0; i < ${#user_files_from_to[@]}; i += 2)); do
-        HandleUserFile $user_files_dir${user_files_from_to[i]} $HOME${user_files_from_to[i + 1]}
+        HandleUserFile $user_files_dir${user_files_from_to[i]} $HOME/${user_files_from_to[i + 1]}
     done
 }
 
@@ -500,13 +500,13 @@ function HandleUserDirectory() {
 
 function HandleUserDirectories() {
     for directory in ${user_directories[*]}; do
-        HandleUserDirectory $user_files_dir$directory $HOME$directory
+        HandleUserDirectory $user_files_dir$directory $HOME/$directory
     done
 }
 
 function HandleUserDirectoriesFromTo() {
     for ((i = 0; i < ${#user_directories_from_to[@]}; i += 2)); do
-        HandleUserDirectory $user_files_dir${user_directories_from_to[i]} $HOME${user_directories_from_to[i + 1]}
+        HandleUserDirectory $user_files_dir${user_directories_from_to[i]} $HOME/${user_directories_from_to[i + 1]}
     done
 }
 
