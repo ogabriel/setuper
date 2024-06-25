@@ -44,14 +44,10 @@ jobs:
         mkdir -p ./build/arch/src
         cp setuper ./build/arch/src
         cp -r lib/*.sh ./build/arch/src
-        echo "Entering build directory"
-        cd /build
+        cd ./build/arch
 
         echo "Setup user"
         useradd --no-create-home build
-
-        echo "show passwd"
-        cat /etc/passwd
 
         echo "Setting permissions"
         chown -R build:build ./
