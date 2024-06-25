@@ -75,25 +75,25 @@ function Package() {
     elif [[ $2 =~ --source=.* ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
-        local sourced_file=$sourced_packages_dir$2
+        local file=$sourced_package_dir${2#--source=}
 
-        if [[ -f $sourced_file ]]; then
+        if [[ -f $file ]]; then
             case $distro in
             arch)
                 if [[ pacman -Q $1 &>/dev/null ]]; then
-                    sourced_packages+=($1)
+                    sourced_packages+=("$1 $2")
                 fi
                 ;;
             debian)
                 if [[ dpkg -l $1 &>/dev/null ]]; then
-                    sourced_packages+=($1)
+                    sourced_packages+=("$1 $2")
                 fi
             *)
                 Error "Could not check if package $1 is installed on $distro"
                 ;;
             esac
         else
-            Error "Invalid package source file $sourced_file"
+            Error "Invalid package source file $file"
         fi
     elif [[ $2 == '--flatpak' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
