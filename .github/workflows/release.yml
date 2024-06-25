@@ -54,10 +54,10 @@ jobs:
         cat /etc/passwd
 
         echo "Setting permissions"
-        chown -R build:build ./build
+        chown -R build:build ./
 
         echo "Setting permissions for everyone"
-        chmod -R 777 ./build
+        chmod -R 777 ./
 
         echo "Switching to build user"
         su build
