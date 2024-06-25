@@ -1,5 +1,5 @@
 pkgname='setuper'
-pkgver=v0.1.0
+pkgver=VERSION
 pkgrel=1
 pkgdesc='Manage and setup your system and user environment'
 url=https://github.com/ogabriel/setuper

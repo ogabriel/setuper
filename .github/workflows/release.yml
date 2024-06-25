@@ -41,6 +41,7 @@ jobs:
 
     - name: Build arch
       run: |
+        sed -i "s/VERSION/${{ github.ref_name }}/" ./build/arch/PKGBUILD
         mkdir -p ./build/arch/src
         cp ./setuper ./build/arch/src/
         cp -r ./lib/ ./build/arch/src/
