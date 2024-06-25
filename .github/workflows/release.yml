@@ -42,9 +42,11 @@ jobs:
     - name: Build arch
       run: |
         mkdir -p ./build/arch/src
+        mkdir -p ./build/arch/src/lib
         cp setuper ./build/arch/src
-        cp -r lib/*.sh ./build/arch/src
+        cp -r lib/*.sh ./build/arch/src/lib
         cd ./build/arch
+        ls -la
 
         echo "Setup user"
         useradd --no-create-home build
