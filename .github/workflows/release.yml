@@ -37,12 +37,9 @@ jobs:
 
     - name: Build arch
       run: |
-        mkdir /setuper
-        mkdir /setuper/src
-        cp build/arch/PKGBUILD /setuper/src/
-        cp setuper /setuper/src/
-        cp -r lib/ /setuper/src/
-        docker run --rm --volume $(pwd):/setuper --workdir /setuper archlinux:latest /bin/bash -c "/build/arch/build.sh"
+        cp setuper ./build/arch/
+        cp -r lib/ ./build/arch/
+        docker run --rm --volume ./build/arch:/build --workdir /setuper archlinux:latest /bin/bash -c "/build/build.sh"
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
