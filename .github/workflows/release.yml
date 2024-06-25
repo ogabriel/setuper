@@ -39,10 +39,10 @@ jobs:
       run: |
         cp setuper ./build/arch/
         cp -r lib/ ./build/arch/
-        docker run --rm --volume ./build/arch:/build --workdir /setuper --user 1000:1000 archlinux:latest /bin/bash -c "/build/build.sh"
+        docker run --rm --volume ./build/arch:/build archlinux:latest /bin/bash -c "/build/build.sh"
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: /setuper/setuper_${{ github.ref_name }}-1-any.pkg.tar.zst
+        files: ./build/arch/setuper_${{ github.ref_name }}-1-any.pkg.tar.zst

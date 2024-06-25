@@ -2,4 +2,4 @@
 
 pacman -Sy base-devel --noconfirm --needed
 cd /build
-makepkg
+su nobody -c "makepkg"
