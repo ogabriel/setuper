@@ -161,7 +161,6 @@ If you already has a dotfiles repository you can add it to the `setuper` reposit
 
 - [ ] add unit tests - right now the project only works through hope
 - [ ] strict mode for more control over system
-- [ ] enable support for asdf
 - [ ] allow to be run as root
 - [ ] community configs to certain hardware (ex: nvidia)
 - [ ] add a way to use transactions/checksums to avoid doing too much work
