@@ -45,20 +45,9 @@ jobs:
         cp ./setuper ./build/arch/src/
         cp -r ./lib/ ./build/arch/src/
         cd ./build/arch
-
-        echo "Setup user"
         useradd --no-create-home build
-
-        echo "Setting permissions"
         chown -R build:build ./
-
-        echo "Setting permissions for everyone"
-        chmod -R 777 ./
-
-        echo "Building package"
         sudo -u build makepkg
-
-        ls -la
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
