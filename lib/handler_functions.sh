@@ -446,7 +446,7 @@ function HandleSystemDirectoriesFromTo() {
 
 function UserCreateDirectories() {
     local directories=(${1//\// })
-    local current="/"
+    local current=$HOME/
 
     for ((i = 0; i + 1 < ${#directories[@]}; i++)); do
         current+="${directories[i]}/"
