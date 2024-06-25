@@ -58,6 +58,8 @@ jobs:
         echo "Building package"
         sudo -u build makepkg
 
+        ls -la
+
     - name: Upload arch
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
