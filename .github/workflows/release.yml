@@ -64,7 +64,7 @@ jobs:
         echo "Current user is: $(whoami)"
 
         echo "Building package"
-        makepkg
+        sudo -u build makepkg
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
