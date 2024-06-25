@@ -49,7 +49,7 @@ function RemovePkg() {
     RemovePackage $@
 }
 
-sourced_packages_dir=$config_dir/packages
+sourced_packages_dir=$config_dir/packages/
 
 function Package() {
     if [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
@@ -148,7 +148,7 @@ function SystemdUnitSystemMask() {
     systemd_unit_system_mask+=($1)
 }
 
-system_files_dir=$config_dir/system
+system_files_dir=$config_dir/system/
 
 function SystemFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
@@ -238,7 +238,7 @@ function SystemDirectoryFromTo() {
     fi
 }
 
-user_files_dir=$config_dir/user
+user_files_dir=$config_dir/user/
 
 function UserFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
