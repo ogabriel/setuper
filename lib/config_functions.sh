@@ -28,7 +28,21 @@ function Group() {
 function RemovePackage() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
-    packages_to_remove+=($1)
+    case $distro in
+    'arch')
+        if [[ pacman -Q $1 &>/dev/null ]]; then
+            packages_to_remove+=($1)
+        fi
+        ;;
+    'debian')
+        if [[ dpkg -l $1 &>/dev/null ]]; then
+            packages_to_remove+=($1)
+        fi
+        ;;
+    *)
+        Error "Could not check if package $1 is installed on $distro"
+        ;;
+    esac
 }
 
 function RemovePkg() {

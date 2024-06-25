@@ -53,12 +53,6 @@ function HandleUsers() {
 }
 
 function HandlePackagesRemoval() {
-    for index in ${!packages_to_remove[*]}; do
-        if pacman -Q ${packages_to_remove[index]} &>/dev/null; then
-            unset 'packages_to_remove[$index]'
-        fi
-    done
-
     if [[ ${#packages_to_remove[*]} -gt 0 ]]; then
         case $distro in
         arch)
