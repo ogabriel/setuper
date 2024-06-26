@@ -461,14 +461,15 @@ function UserCreateDirectories() {
 function HandleUserFile() {
     local from_file=$1
     local to_file=$2
+    local home_to_file=$HOME/$to_file
 
-    if [[ ! -L $to_file ]] || [[ "$(readlink $to_file)" != $from_file ]]; then
+    if [[ ! -f $home_to_file ]]; then
         UserCreateDirectories $to_file
-        Info "Linking file $from_file to $to_file"
-        ln -s $from_file $to_file
-    elif [[ -f $to_file ]]; then
-        Info "Linking file $from_file to $to_file"
-        ln -sf $from_file $to_file
+        Info "Linking file $from_file to $home_to_file"
+        ln -s $from_file $home_to_file
+    elif [[ "$(readlink $home_to_file)" != $from_file ]]; then
+        Info "Linking file $from_file to $home_to_file"
+        ln -sf $from_file $home_to_file
     fi
 }
 
@@ -479,34 +480,48 @@ function HandleUserFiles() {
 }
 
 function HandleUserFilesFromTo() {
-    for ((i = 0; i < ${#user_files_from_to[@]}; i += 2)); do
-        HandleUserFile $user_files_dir${user_files_from_to[i]} $HOME/${user_files_from_to[i + 1]}
+    for ((i = 0; i < ${#user_files_from_to[@]}; i++)); do
+        local user_file_config
+        readarray -d ' ' user_file_config <<<"${user_files_from_to[$i]}"
+
+        local from_file=$user_files_dir${user_file_config[0]}
+        local to_file=${user_file_config[1]}
+
+        HandleUserFile $from_file $to_file
     done
 }
 
 function HandleUserDirectory() {
     local from_dir=$1
     local to_dir=$2
+    local home_to_dir=$HOME/$to_dir
 
-    if [[ ! -L $to_dir ]] || [[ "$(readlink $to_dir)" != $from_dir ]]; then
+    if [[ ! -d $home_to_dir ]]; then
         UserCreateDirectories $to_dir
         Info "Linking directory from $from_dir to $to_dir"
-        ln -s $from_dir $to_dir
-    elif [[ -d $to_dir ]]; then
+        ln -s $from_dir $home_to_dir
+    elif [[ "$(readlink $home_to_dir)" != $from_dir ]]; then
         Info "Linking directory from $from_dir to $to_dir"
-        ln -sf $from_dir $to_dir
+        rm -rf $home_to_dir
+        ln -s $from_dir $home_to_dir
     fi
 }
 
 function HandleUserDirectories() {
     for directory in ${user_directories[*]}; do
-        HandleUserDirectory $user_files_dir$directory $HOME/$directory
+        HandleUserDirectory $user_files_dir$directory $directory
     done
 }
 
 function HandleUserDirectoriesFromTo() {
-    for ((i = 0; i < ${#user_directories_from_to[@]}; i += 2)); do
-        HandleUserDirectory $user_files_dir${user_directories_from_to[i]} $HOME/${user_directories_from_to[i + 1]}
+    for ((i = 0; i < ${#user_directories_from_to[@]}; i++)); do
+        local user_directory_config
+        readarray -d ' ' user_directory_config <<<"${user_directories_from_to[$i]}"
+
+        local from_dir=$user_files_dir${user_directory_config[0]}
+        local to_dir=${user_directory_config[1]}
+
+        HandleUserDirectory $from_dir $to_dir
     done
 }
 
