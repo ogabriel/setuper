@@ -52,7 +52,23 @@ function RemovePkg() {
 sourced_packages_dir=$config_dir/packages/
 
 function Package() {
-    if [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
+    if [[ $# -eq 1 ]]; then
+        case $distro in
+        arch)
+            if ! pacman -Q $1 &>/dev/null; then
+                packages+=($1)
+            fi
+            ;;
+        debian)
+            if ! dpkg -l $1 &>/dev/null; then
+                packages+=($1)
+            fi
+            ;;
+        *)
+            Error "Could not check if package $1 is installed on $distro"
+            ;;
+        esac
+    elif [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
@@ -107,23 +123,7 @@ function Package() {
             flatpak_packages+=($1)
         fi
     else
-        ValidateFunctionParams 1 $# $FUNCNAME
-
-        case $distro in
-        arch)
-            if ! pacman -Q $1 &>/dev/null; then
-                packages+=($1)
-            fi
-            ;;
-        debian)
-            if ! dpkg -l $1 &>/dev/null; then
-                packages+=($1)
-            fi
-            ;;
-        *)
-            Error "Could not check if package $1 is installed on $distro"
-            ;;
-        esac
+        Error "Invalid flag $2 for $FUNCNAME"
     fi
 }
 
