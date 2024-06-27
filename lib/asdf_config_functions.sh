@@ -1,3 +1,52 @@
+function ASDFPlugin() {
+    ValidateExactFunctionParams 1 $# $FUNCNAME
+
+    if command -v asdf &>/dev/null; then
+        if ! asdf plugin list | grep $1 &>/dev/null; then
+            asdf_plugins+=($1)
+            ASDFPluginDependency $1
+        fi
+    else
+        asdf_plugins+=($1)
+        ASDFPluginDependency $1
+    fi
+}
+
+function ASDFPluginDependency() {
+    case $1 in
+    elixir)
+        __elixir
+        ;;
+    golang)
+        __golang
+        ;;
+    lua)
+        __lua
+        ;;
+    java)
+        __java
+        ;;
+    nodejs)
+        __nodejs
+        ;;
+    ruby)
+        __ruby
+        ;;
+    python)
+        __python
+        ;;
+    php)
+        __php
+        ;;
+    erlang)
+        __erlang
+        ;;
+    stylua)
+        __stylua
+        ;;
+    esac
+}
+
 function __elixir() {
     Pkg unzip
     Pkg inotify-tools
@@ -270,53 +319,4 @@ function __stylua() {
     Pkg bash
     Pkg curl
     Pkg unzip
-}
-
-function ASDFPluginDependency() {
-    case $1 in
-    elixir)
-        __elixir
-        ;;
-    golang)
-        __golang
-        ;;
-    lua)
-        __lua
-        ;;
-    java)
-        __java
-        ;;
-    nodejs)
-        __nodejs
-        ;;
-    ruby)
-        __ruby
-        ;;
-    python)
-        __python
-        ;;
-    php)
-        __php
-        ;;
-    erlang)
-        __erlang
-        ;;
-    stylua)
-        __stylua
-        ;;
-    esac
-}
-
-function ASDFPlugin() {
-    ValidateExactFunctionParams 1 $# $FUNCNAME
-
-    if command -v asdf &>/dev/null; then
-        if ! asdf plugin list | grep $1 &>/dev/null; then
-            asdf_plugins+=($1)
-            ASDFPluginDependency $1
-        fi
-    else
-        asdf_plugins+=($1)
-        ASDFPluginDependency $1
-    fi
 }
