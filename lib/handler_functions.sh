@@ -159,134 +159,33 @@ function HandleFlatpakPackages() {
     fi
 }
 
-function HandlePreASDFPlugins() {
-    if [[ ${#asdf_pre_plugins[*]} -gt 0 ]]; then
+function HandlePreInstallASDF() {
+    if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
         if ! command -v asdf; then
             case $distro in
             arch)
-                packages+=(asdf-vm)
+                Pkg asdf-vm --AUR
                 ;;
             debian)
-                packages+=(curl git)
+                Pkg git
+                Pkg curl
                 ;;
             esac
-        else
-            for ((i = 0; i < ${#asdf_plugins[*]}; i++)); do
-                if ! asdf plugin list | grep ${asdf_plugins[i]} &>/dev/null; then
-                    unset 'asdf_plugins[$i]'
-                fi
-            done
         fi
-
-        for plugin in ${asdf_plugins[*]}; do
-            case $plugin in
-            elixir)
-                packages+=(unzip inotify-tools)
-                ;;
-            php)
-                case $distro in
-                arch)
-                    packages+=(autoconf bison base-devel curl gettext git gd libcurl-gnutls libedit icu libjpeg-turbo mariadb-libs oniguruma libpng readline sqlite openssl libxml2 libzip pkg-config re2c zlib)
-                    ;;
-                debian)
-                    packages+=(autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev)
-                    ;;
-                esac
-                ;;
-            golang)
-                packages+=(coreutils curl)
-                ;;
-            java)
-                case $distro in
-                arch)
-                    packages+=(bash curl coreutils unzip jq)
-                    ;;
-                debian)
-                    packages+=(bash curl sha256sum unzip jq)
-                    ;;
-                esac
-                ;;
-            lua)
-                case $distro in
-                arch)
-                    packages+=(base-devel linux-headers)
-                    ;;
-                debian)
-                    packages+=(linux-headers-$(uname -r) build-essential)
-                    ;;
-                esac
-                ;;
-            erlang)
-                case $distro in
-                arch)
-                    packages+=(base-devel ncurses glu mesa wxwidgets-gtk3 libpng libssh unixodbc xsltproc fop)
-                    ;;
-                debian)
-                    case $distro_id in
-                    ubuntu)
-                        case $distro_version in
-                        24.04)
-                            packages+=(build-essential autoconf m4 libncurses5-dev libwxgtk3.2-dev libwxgtk-webview3.2-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk)
-                            ;;
-                        20.04 | 22.04)
-                            packages+=(install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk)
-                            ;;
-                        16.04 | 18.04)
-                            packages+=(build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop)
-                            ;;
-                        *) ;;
-                        esac
-
-                        ;;
-                    *)
-                        packages+=(build-essential autoconf m4 libncurses-dev libwxgtk3.2-dev libwxgtk-webview3.2-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils openjdk-17-jdk)
-                        ;;
-                    esac
-                    ;;
-                esac
-                ;;
-            nodejs)
-                case $distro in
-                arch)
-                    packages+=(gcc make python python-pip)
-                    ;;
-                debian)
-                    packages+=(g++ make python3 python3-pip)
-                    ;;
-                esac
-                ;;
-            python)
-                case $distro in
-                arch)
-                    packages+=(base-devel openssl zlib xz tk)
-                    ;;
-                debian)
-                    packages+=(build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-de)
-                    ;;
-                esac
-                ;;
-            ruby)
-                case $distro in
-                arch)
-                    packages+=(base-devel rust libffi libyaml openssl zlib)
-                    ;;
-                debian)
-                    packages+=(autoconf patch build-essential rustc libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libgmp-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev uuid-dev)
-                    ;;
-                esac
-                ;;
-            esac
-        done
     fi
 }
 
-function HandlePostASDFPlugins() {
-    case $distro in
-    debian)
-        source $lib_dir/installer/asdf.sh
-        ;;
-    esac
+function HandlePostInstallASDF() {
+    if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
+        case $distro in
+        debian)
+            source $lib_dir/installer/asdf.sh
+            ;;
+        esac
+    fi
+}
 
+function HandleASDFPlugins() {
     for plugin in ${asdf_plugins[*]}; do
         Info "Adding ASDF plugin $plugin"
         asdf plugin add $plugin
