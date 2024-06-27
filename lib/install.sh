@@ -39,3 +39,5 @@ HandleSystemdUnits
 
 HandleSSHGenKeys
 HandleSSHAddkeys
+
+Info "Installation complete"
