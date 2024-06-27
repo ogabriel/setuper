@@ -245,7 +245,7 @@ function HandleSystemFile() {
         Info "Copying file $from_file to $to_file"
         sudo cp $from_file $to_file
     else
-        if ! sudo diff $from_file $to_file; then
+        if ! sudo diff $from_file $to_file &>/dev/null; then
             Info "Copying file $from_file to $to_file"
             sudo cp $from_file $to_file
         fi
@@ -295,7 +295,7 @@ function HandleSystemDirectory() {
         Info "Copying directory $from_dir to $to_dir"
         sudo cp -r $from_dir $to_dir
     else
-        if ! sudo diff -r $from_dir $to_dir; then
+        if ! sudo diff -r $from_dir $to_dir &>/dev/null; then
             Info "Copying directory $from_dir to $to_dir"
             sudo rm -rf $to_dir
             sudo cp -rf $from_dir $to_dir
