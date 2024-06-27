@@ -425,7 +425,7 @@ function HandleSSHGenKeys() {
         for ((j = 0; j < ${#gen_key_config[@]}; j++)); do
             if [[ ${gen_key_config[j]} =~ --file=.+ ]]; then
                 local file=${gen_key_config[j]#--file=}
-                file=${file//\ /}
+                file=${file//[[:space:]]/}
             elif [[ ${gen_key_config[j]} =~ --comment=.+ ]]; then
                 local comment=${gen_key_config[j]#--comment=}
                 comment=${comment//\ /}
