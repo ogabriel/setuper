@@ -181,6 +181,7 @@ function SystemFileFromTo() {
 
     if [[ -f $from_file ]]; then
         shift
+        shift
         while [[ $# -gt 0 ]]; do
             if [[ $1 =~ --chmod=\d{3} ]]; then
                 shift
@@ -224,6 +225,7 @@ function SystemDirectoryFromTo() {
     local from_dir=$system_files_dir$1
 
     if [[ -d $from_dir ]]; then
+        shift
         shift
         while [[ $# -gt 0 ]]; do
             if [[ $1 =~ --chmod=\d{3} ]]; then
