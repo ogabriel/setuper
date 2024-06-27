@@ -160,7 +160,7 @@ function SystemFile() {
     if [[ -f $from_file ]]; then
         shift
         while [[ $# -gt 0 ]]; do
-            if [[ $1 =~ --chmod=\d{3} ]]; then
+            if [[ $1 =~ --chmod=[0-9]{3} ]]; then
                 shift
             else
                 Error "Invalid flag $1 for $FUNCNAME"
@@ -183,7 +183,7 @@ function SystemFileFromTo() {
         shift
         shift
         while [[ $# -gt 0 ]]; do
-            if [[ $1 =~ --chmod=\d{3} ]]; then
+            if [[ $1 =~ --chmod=[0-9]{3} ]]; then
                 shift
             else
                 Error "Invalid flag $1 for $FUNCNAME"
@@ -205,7 +205,7 @@ function SystemDirectory() {
     if [[ -d $from_dir ]]; then
         shift
         while [[ $# -gt 0 ]]; do
-            if [[ $1 =~ --chmod=\d{3} ]]; then
+            if [[ $1 =~ --chmod=[0-9]{3} ]]; then
                 shift
             else
                 Error "Invalid flag $1 for $FUNCNAME"
@@ -228,7 +228,7 @@ function SystemDirectoryFromTo() {
         shift
         shift
         while [[ $# -gt 0 ]]; do
-            if [[ $1 =~ --chmod=\d{3} ]]; then
+            if [[ $1 =~ --chmod=[0-9]{3} ]]; then
                 shift
             else
                 Error "Invalid flag $1 for $FUNCNAME"
