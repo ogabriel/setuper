@@ -192,14 +192,14 @@ function HandleSystemdUnits() {
         sudo systemctl daemon-reload
 
         for service in ${systemd_unit_system_enable[*]}; do
-            if ! systemctl is-enabled --quiet $sevice &>/dev/null; then
+            if ! systemctl is-enabled --quiet $service &>/dev/null; then
                 Info "Enabling systemmd system unit $service"
                 sudo systemctl enable $service
             fi
         done
 
         for service in ${systemd_unit_user_enable[*]}; do
-            if ! systemctl --user is-enabled --quiet $sevice &>/dev/null; then
+            if ! systemctl --user is-enabled --quiet $service &>/dev/null; then
                 Info "Enabling systemmd user unit $service"
                 systemctl --user enable $service
             fi
