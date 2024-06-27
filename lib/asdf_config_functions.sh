@@ -308,7 +308,7 @@ function ASDFPluginDependency() {
 }
 
 function ASDFPlugin() {
-    ValidateFunctionParams 1 $# $FUNCNAME
+    ValidateExactFunctionParams 1 $# $FUNCNAME
 
     if command -v asdf &>/dev/null; then
         if ! asdf plugin list | grep $1 &>/dev/null; then
