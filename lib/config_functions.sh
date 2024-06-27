@@ -174,7 +174,7 @@ function SystemFile() {
 }
 
 function SystemFileFromTo() {
-    ValidateExactFunctionParams 2 $# $FUNCNAME
+    ValidateFunctionParams 2 $# $FUNCNAME
 
     local file=$@
     local from_file=$system_files_dir$1
@@ -219,7 +219,7 @@ function SystemDirectory() {
 }
 
 function SystemDirectoryFromTo() {
-    ValidateExactFunctionParams 2 $# $FUNCNAME
+    ValidateFunctionParams 2 $# $FUNCNAME
 
     local dir=$@
     local from_dir=$system_files_dir$1
