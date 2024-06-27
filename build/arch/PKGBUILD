@@ -12,6 +12,7 @@ depends=(
     'grep'
     'systemd'
     'sudo'
+    'openssh'
 )
 
 package() {
