@@ -115,7 +115,7 @@ function Package() {
     elif [[ $2 == '--flatpak' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
-        if command -v flatpak &>/dev/null; then
+        if [[ ${flatpak_is_installed:=$(command -v flatpak &>/dev/null && echo true || echo false)} = true ]]; then
             if ! flatpak list | grep $1 &>/dev/null; then
                 flatpak_packages+=($1)
             fi

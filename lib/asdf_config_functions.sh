@@ -1,7 +1,7 @@
 function ASDFPlugin() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
 
-    if command -v asdf &>/dev/null; then
+    if [[ ${asdf_is_installed:=$(command -v asdf &>/dev/null && echo true || echo false)} = true ]]; then
         if ! asdf plugin list | grep $1 &>/dev/null; then
             asdf_plugins+=($1)
             ASDFPluginDependency $1
