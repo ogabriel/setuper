@@ -140,7 +140,7 @@ function HandleSourcedPackages() {
 
 function HandleFlatpakPackages() {
     if [[ ${#flatpak_packages[*]} -gt 0 ]]; then
-        if [[ ${flatpak_is_installed:=$(command -v flatpak &>/dev/null && echo true || echo false)} = true ]]; then
+        if [[ ${flatpak_is_installed:=$(command -v flatpak &>/dev/null && echo true || echo false)} = false ]]; then
             packages+=('flatpak')
 
             Info "Flatpak will be installed, restart your computer after setuper runs to install flatpak packages"
@@ -153,7 +153,7 @@ function HandleFlatpakPackages() {
 
 function HandlePreInstallASDF() {
     if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
-        if [[ ${asdf_is_installed:=$(command -v asdf &>/dev/null && echo true || echo false)} = true ]]; then
+        if [[ ${asdf_is_installed:=$(command -v asdf &>/dev/null && echo true || echo false)} = false ]]; then
             case $distro in
             arch)
                 Pkg asdf-vm --AUR
