@@ -99,7 +99,13 @@ function Package() {
     elif [[ $2 == '--flatpak' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
-        flatpak_packages+=($1)
+        if command -v flatpak &>/dev/null; then
+            if ! flatpak list | grep $1 &>/dev/null; then
+                flatpak_packages+=($1)
+            fi
+        else
+            flatpak_packages+=($1)
+        fi
     else
         ValidateFunctionParams 1 $# $FUNCNAME
 

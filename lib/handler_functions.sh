@@ -145,16 +145,8 @@ function HandleFlatpakPackages() {
 
             Info "Flatpak will be installed, restart your computer after setuper runs to install flatpak packages"
         else
-            for ((i = 0; i < ${#flatpak_packages[*]}; i++)); do
-                if flatpak list | grep ${flatpak_packages[i]} &>/dev/null; then
-                    unset 'flatpak_packages[$i]'
-                fi
-            done
-
-            if [[ ${#flatpak_packages[*]} -gt 0 ]]; then
-                Info "Installing flatpak packages"
-                flatpak install --assumeyes --noninteractive flathub ${flatpak_packages[*]}
-            fi
+            Info "Installing flatpak packages"
+            flatpak install --assumeyes --noninteractive flathub ${flatpak_packages[*]}
         fi
     fi
 }
