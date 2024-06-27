@@ -297,7 +297,8 @@ function HandleSystemDirectory() {
     else
         if ! sudo diff -r $from_dir $to_dir; then
             Info "Copying directory $from_dir to $to_dir"
-            sudo cp -r $from_dir $to_dir
+            sudo rm -rf $to_dir
+            sudo cp -rf $from_dir $to_dir
         fi
     fi
 
