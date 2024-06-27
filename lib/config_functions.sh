@@ -7,9 +7,9 @@ function User() {
 
     shift
     while [[ $# -gt 0 ]]; do
-        if [[ $1 =~ --groups=.+ ]]; then
+        if [[ $1 =~ --groups=[a-z]+ ]]; then
             shift
-        elif [[ $1 =~ --shell=.+ ]]; then
+        elif [[ $1 =~ --shell=[a-z]+ ]]; then
             shift
         else
             Error "Invalid flag $1 for $FUNCNAME"
@@ -88,7 +88,7 @@ function Package() {
         else
             Error "Group packages are only supported on Arch Linux"
         fi
-    elif [[ $2 =~ --source=.* ]]; then
+    elif [[ $2 =~ --source=[A-Za-z]* ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         local file=$sourced_package_dir${2#--source=}
