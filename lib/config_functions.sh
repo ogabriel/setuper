@@ -88,7 +88,7 @@ function Package() {
         else
             Error "Group packages are only supported on Arch Linux"
         fi
-    elif [[ $2 =~ --source=[A-Za-z]* ]]; then
+    elif [[ $2 =~ --source=.* ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         local file=$sourced_package_dir${2#--source=}
