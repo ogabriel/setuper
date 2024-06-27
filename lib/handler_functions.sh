@@ -15,10 +15,11 @@ function HandleUsers() {
         for ((j = 0; j < ${#user_config[@]}; j++)); do
             if [[ ${user_config[j]} =~ --groups=.+ ]]; then
                 local groups=${user_config[j]#--groups=}
-                groups=${groups//,/}
+                groups=${groups//[[:space:]]/}
                 groups=(${groups//,/ })
             elif [[ ${user_config[j]} =~ --shell=.+ ]]; then
                 local shell=${user_config[j]#--shell=}
+                shell=${shell//[[:space:]]/}
             else
                 local user=${user_config[j]}
             fi
@@ -428,10 +429,10 @@ function HandleSSHGenKeys() {
                 file=${file//[[:space:]]/}
             elif [[ ${gen_key_config[j]} =~ --comment=.+ ]]; then
                 local comment=${gen_key_config[j]#--comment=}
-                comment=${comment//\ /}
+                comment=${comment//[[:space:]]/}
             else
                 local algo=${gen_key_config[j]}
-                algo=${algo//\ /}
+                algo=${algo//[[:space:]]/}
             fi
         done
 
