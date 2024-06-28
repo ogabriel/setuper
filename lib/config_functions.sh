@@ -245,6 +245,7 @@ user_files_dir=$config_dir/user/
 
 function UserFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
+    ValidateFileName $1
 
     local from_file=$user_files_dir$1
 
@@ -257,6 +258,7 @@ function UserFile() {
 
 function UserFileFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
+    ValidateFileName $1
 
     local from_file=$user_files_dir$1
 
@@ -269,6 +271,7 @@ function UserFileFromTo() {
 
 function UserDirectory() {
     ValidateFunctionParams 1 $# $FUNCNAME
+    ValidateFileName $1
 
     local from_directory=$user_files_dir$1
 
@@ -281,6 +284,7 @@ function UserDirectory() {
 
 function UserDirectoryFromTo() {
     ValidateExactFunctionParams 2 $# $FUNCNAME
+    ValidateFileName $1
 
     local from_directory=$user_files_dir$1
 
@@ -299,6 +303,7 @@ function SSHGenKey() {
     shift
     while [[ $# -gt 0 ]]; do
         if [[ "$1" =~ --file=.+ ]]; then
+            ValidateFileName ${1#--file=}
             shift
         elif [[ "$1" =~ --comment=.+ ]]; then
             shift
@@ -312,6 +317,7 @@ function SSHGenKey() {
 
 function SSHAddKey() {
     ValidateExactFunctionParams 1 $# $FUNCNAME
+    ValidateFileName $1
 
     ssh_add_keys+=($1)
 }

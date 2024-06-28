@@ -64,3 +64,11 @@ function ValidateExactFunctionParams() {
         fi
     fi
 }
+
+function ValidateFileName() {
+    if [[ $1 == $HOME* ]] || [[ $1 == "~/"* ]]; then
+        Error "File $1 starts with the some directory, remove '~/' or \$HOME from the path"
+    elif [[ $1 == "/"* ]]; then
+        Error "File $1 starts with a '/', remove it"
+    fi
+}
