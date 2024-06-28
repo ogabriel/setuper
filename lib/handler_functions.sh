@@ -353,7 +353,11 @@ function UserCreateDirectories() {
 
 function HandleUserFile() {
     local from_file=$1
+    from_file=${from_file//[[:space:]]/}
+    from_file=${from_file%/}
     local to_file=$2
+    to_file=${to_file//[[:space:]]/}
+    to_file=${to_file%/}
     local home_to_file=$HOME/$to_file
 
     if [[ ! -f $home_to_file ]]; then
@@ -386,7 +390,11 @@ function HandleUserFilesFromTo() {
 
 function HandleUserDirectory() {
     local from_dir=$1
+    from_dir=${from_dir//[[:space:]]/}
+    from_dir=${from_dir%/}
     local to_dir=$2
+    to_dir=${to_dir//[[:space:]]/}
+    to_dir=${to_dir%/}
     local home_to_dir=$HOME/$to_dir
 
     if [[ ! -d $home_to_dir ]]; then
