@@ -89,7 +89,7 @@ function HandlePackages() {
         case $installer in
         pacman)
             Info "Installing packages with pacman"
-            sudo pacman -Sy --noconfirm archlinux-keyring
+            sudo pacman -Sy --noconfirm --needed archlinux-keyring
             sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
             ;;
         yay)
