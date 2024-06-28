@@ -488,7 +488,7 @@ function HandleSSHAddkeys() {
                 ssh-add $HOME/.ssh/$ssh_key
             fi
         else
-            Error "Invalid SSH key $$ssh_public_key_file"
+            Error "Invalid SSH key $ssh_public_key_file"
         fi
     done
 }
