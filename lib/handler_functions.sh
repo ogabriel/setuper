@@ -93,7 +93,7 @@ function HandlePackages() {
             sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
             ;;
         yay)
-            sudo pacman -Sy --noconfirm archlinux-keyring
+            sudo pacman -Sy --noconfirm --needed archlinux-keyring
 
             if ! pacman -Q yay &>/dev/null; then
                 source $lib_dir/installer/yay.sh
