@@ -14,20 +14,21 @@ jobs:
 
     - name: Build DEB
       run: |
-        mkdir setuper_${{ github.ref_name }}
-        mkdir setuper_${{ github.ref_name }}/DEBIAN
-        mkdir setuper_${{ github.ref_name }}/usr
-        mkdir setuper_${{ github.ref_name }}/usr/lib/
-        mkdir setuper_${{ github.ref_name }}/usr/bin/
-        mv build/debian/control setuper_${{ github.ref_name }}/DEBIAN/control
-        mv setuper setuper_${{ github.ref_name }}/usr/bin/
-        mv lib/ setuper_${{ github.ref_name }}/usr/lib/setuper
-        dpkg-deb --build setuper_${{ github.ref_name }}
+        VERSION=${{ github.ref_name }}
+        VERSION=${VERSION:1}
+        sed "s/VERSION/$VERSION/" build/debian/DEBIAN/control
+        mkdir -p build/debian/usr/
+        mkdir -p build/debian/usr/bin/
+        mkdir -p build/debian/usr/lib/
+        mv setuper build/debian/usr/bin/
+        mv lib/ build/debian/usr/lib/setuper
+        cd build/debian
+        dpkg-deb --build setuper
 
     - name: Upload DEB
       uses: softprops/action-gh-release@v2
       with:
-        files: setuper_${{ github.ref_name }}.deb
+        files: ./build/debian/setuper.deb
 
   arch:
     runs-on: ubuntu-latest
@@ -41,16 +42,19 @@ jobs:
 
     - name: Build arch
       run: |
-        sed -i "s/VERSION/${{ github.ref_name }}/" ./build/arch/PKGBUILD
-        mkdir -p ./build/arch/src
-        cp ./setuper ./build/arch/src/
-        cp -r ./lib/ ./build/arch/src/
-        cd ./build/arch
+        VERSION=${{ github.ref_name }}
+        VERSION=${VERSION:1}
+        sed -i "s/VERSION/$VERSION/" build/arch/PKGBUILD
+        mkdir -p build/arch/src
+        mv setuper build/arch/src/
+        mv lib/ build/arch/src/
+        cd build/arch
         useradd --no-create-home build
         chown -R build:build ./
         sudo -u build makepkg
+        mv setuper-$VERSION-1-any.pkg.tar.zst setuper.pkg.tar.zst
 
     - name: Upload arch
       uses: softprops/action-gh-release@v2
       with:
-        files: ./build/arch/setuper-${{ github.ref_name }}-1-any.pkg.tar.zst
+        files: ./build/arch/setuper.pkg.tar.zst
