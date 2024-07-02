@@ -1,4 +1,22 @@
-#!/bin/bash
+function LoadConfig() {
+    if [[ -f $config_dir/config.sh ]]; then
+        Info "Loading config"
+        source $config_dir/config.sh
+    fi
+
+    : ${system_files_dir:=$config_dir/system/}
+    : ${user_files_dir:=$config_dir/user/}
+    : ${sourced_package_dir:=$config_dir/packages/}
+
+    for file in $config_dir/*.sh; do
+        if [[ $file == $config_dir/config.sh ]]; then
+            continue
+        else
+            Info "Loading $file"
+            source $file
+        fi
+    done
+}
 
 function User() {
     ValidateFunctionParams 1 $# $FUNCNAME
@@ -48,8 +66,6 @@ function RemovePackage() {
 function RemovePkg() {
     RemovePackage $@
 }
-
-sourced_packages_dir=$config_dir/packages/
 
 function Package() {
     if [[ $# -eq 1 ]]; then
@@ -149,8 +165,6 @@ function SystemdUnitSystemMask() {
     systemd_unit_system_mask+=($1)
 }
 
-system_files_dir=$config_dir/system/
-
 function SystemFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
@@ -241,8 +255,6 @@ function SystemDirectoryFromTo() {
     fi
 }
 
-user_files_dir=$config_dir/user/
-
 function UserFile() {
     ValidateFunctionParams 1 $# $FUNCNAME
     ValidateFileName $1
@@ -320,11 +332,4 @@ function SSHAddKey() {
     ValidateFileName $1
 
     ssh_add_keys+=($1)
-}
-
-function LoadConfig() {
-    for file in $config_dir/*.sh; do
-        Info "Loading $file"
-        source $file
-    done
 }
