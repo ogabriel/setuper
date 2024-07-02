@@ -13,9 +13,12 @@ else
     readonly lib_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
     readonly config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/setuper
 
-    if [[ $1 == 'install' ]]; then
+    case $1 in
+    install)
         source $lib_dir/install.sh
-    else
-        printf "Invalid option\n"
-    fi
+        ;;
+    *)
+        echo "Invalid option"
+        ;;
+    esac
 fi
