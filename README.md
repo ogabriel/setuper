@@ -12,6 +12,25 @@ Go to the release page and download the debian or arch package.
 
 ## Configuration
 
+### Paths
+
+The default path for the config is on `$HOME/.config/setuper/`
+
+And inside that you can have three folders with the files to be used:
+- `./system` - for the system files and directories, these files will be copied to your system with the `sudo` command
+    - it's not a link because it's not really recommended to use links from user files to root
+- `./user` - user files and directories, will be soft linked to your files
+    - these files should be mostly the dotfiles
+- `./packages` - from your sourced files
+
+you can also define custom locations to these files with a `$HOME/.config/setuper/config.sh`, like:
+
+```bash
+system_files_dir=$HOME/.system/
+user_files_dir=$HOME/.dotfiles/
+sourced_package_dir=$HOME/.mypackages/
+```
+
 ### Functions
 
 - `User username`- creates the user and configures it, can be just used as `User $USER`
