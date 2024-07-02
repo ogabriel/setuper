@@ -1,5 +1,5 @@
 Package: setuper
-Version: 0.1.0
+Version: VERSION
 Maintainer: Gabriel <gabrieloliver8991@gmail.com>
 Architecture: all
 Description: Manage and setup your system and user environment
