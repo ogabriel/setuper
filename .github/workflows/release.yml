@@ -22,7 +22,7 @@ jobs:
         mkdir -p build/debian/usr/lib/
         mv setuper build/debian/usr/bin/
         mv lib/ build/debian/usr/lib/setuper
-        cd build/debian
+        mv build/debian/ setuper
         dpkg-deb --build setuper
 
     - name: Upload DEB
