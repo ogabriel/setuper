@@ -16,7 +16,7 @@ jobs:
       run: |
         VERSION=${{ github.ref_name }}
         VERSION=${VERSION:1}
-        sed "s/VERSION/$VERSION/" build/debian/DEBIAN/control
+        sed -i "s/VERSION/$VERSION/" build/debian/DEBIAN/control
         mkdir -p build/debian/usr/
         mkdir -p build/debian/usr/bin/
         mkdir -p build/debian/usr/lib/
