@@ -16,4 +16,6 @@ SystemFile /etc/udev/rules.d/80-i915.rules
 
 if [[ $XDG_SESSION_TYPE == 'x11' ]]; then
     Pkg xf86-video-intel
+else
+    RemovePkg xf86-video-intel
 fi

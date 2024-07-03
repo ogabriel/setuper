@@ -17,4 +17,6 @@ SystemFile /etc/profile.d/amdgpu-hw.sh
 
 if [[ $XDG_SESSION_TYPE == 'x11' ]]; then
     Pkg xf86-video-amdgpu
+else
+    RemovePkg xf86-video-amdgpu
 fi
