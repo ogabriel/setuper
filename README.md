@@ -72,45 +72,32 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 <!-- TODO: put order here -->
 
-### Examples of config
+### Sourcing order
+
+When loading the configuration files, the file `config.sh` will be sourced first, and then the rest by alphabetical order
+
+### Examples of configurations
 
 The config file is just a bash file, so you can do everything you want in different hosts or different package managers.
 
-#### TLP
+Inside the folder `examples` of this repository you can find many scripts of setting up things (mainly on arch).
 
-The main use of this feature will be something like have TLP only installed on your laptops:
+You cam copy the entire folder to your config folder, as `setuper` will not source files inside folders, you will have to source the ones you need.
+
+#### Using conditionals
+
+The main use of conditionals will be having different configurations on each PC:
 
 ```bash
 if [[ "$HOSTNAME" == "laptop" ]]; then
-    Pkg tlp
-    Pkg tlp-rdw
-    Pkg smartmontools
-
-    SystemDirectory /etc/tlp.d/
-
-    SystemdUnitSystemEnable tlp.service
-    SystemdUnitSystemMask systemd-rfkill.service
-    SystemdUnitSystemMask systemd-rfkill.socket
+    # something only on laptop
 fi
 ```
 
-#### Docker
-
-Some packages require some configuration that are not done automatically, like docker, that needs you to install the package, add your user to the group and then enable the service
+Sometimes you want to define a variable to be used on other files, so you can set a variable on the `config.sh` to be later used:
 
 ```bash
-Pkg docker
-
-User $USER --groups=wheel,docker
-
-SystemdUnitSystemEnable docker.service
-```
-
-#### Different window managers
-
-Sometimes you want to try out a new WM only on your personal PC, so you can do something like this:
-
-```bash
+# on the config.sh file
 case $HOSTNAME in
 my_work_PC)
     window_manager=sway
@@ -120,26 +107,11 @@ my_personal_PC)
     ;;
 esac
 
+# on another file
 case $window_manager in
 sway)
-    RemovePkg xdg-desktop-portal-hyprland
-    RemovePkg xdg-desktop-portal-gnome
-    RemovePkg xdg-desktop-portal-kde
-
     Pkg sway
-    Pkg xdg-desktop-portal-wlr
-
-    UserDirectory .config/sway
-    ;;
-hyprland)
-    RemovePkg xdg-desktop-portal-wlr
-    RemovePkg xdg-desktop-portal-gnome
-    RemovePkg xdg-desktop-portal-kde
-
-    Pkg hyprland
-    Pkg xdg-desktop-portal-hyprland
-
-    UserDirectory .config/hypr
+    # ...
     ;;
 esac
 ```
@@ -187,7 +159,6 @@ If you already has a dotfiles repository you can add it to the `setuper` reposit
 - [ ] add unit tests - right now the project only works through hope
 - [ ] strict mode for more control over system
 - [ ] allow to be run as root
-- [ ] community configs to certain hardware (ex: nvidia)
 - [ ] add a way to use transactions/checksums to avoid doing too much work
 - [ ] add way to download the package on other places, like a ppa and on AUR
 
@@ -196,6 +167,8 @@ If you already has a dotfiles repository you can add it to the `setuper` reposit
 I've been trying to have a self contained system for years, I've seem the strangest problems of driver corruption or a system getting old and you you re-install your system and forget how you made "that thing" work.
 
 Even on windows i would try to write down how I made certain things work, when I started using linux, I would have the most extensive scripts to install everything to my liking, but every time I would forget how I made certain important thing work.
+
+And as I was migrating all my PCs to archlinux, it was a chore to configure everything manually.
 
 My previous tries, inspirations and alternatives to setuper:
 
