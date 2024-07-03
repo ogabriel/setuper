@@ -368,7 +368,7 @@ function HandleUserFile() {
     to_file=${to_file%/}
     local home_to_file=$HOME/$to_file
 
-    if [[ ! -f $home_to_file ]]; then
+    if ! [[ -L $home_to_file || -f $home_to_file ]]; then
         UserCreateDirectories $to_file
         Info "Linking file $from_file to $home_to_file"
         ln -s $from_file $home_to_file
@@ -380,7 +380,7 @@ function HandleUserFile() {
 
 function HandleUserFiles() {
     for file in ${user_files[*]}; do
-        HandleUserFile $user_files_dir$file $HOME/$file
+        HandleUserFile $user_files_dir$file $file
     done
 }
 
