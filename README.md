@@ -10,6 +10,12 @@ Most arch and debian based distros should work fine.
 
 Go to the release page and download the debian or arch package.
 
+```bash
+wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.deb
+# or
+wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.pkg.tar.zst
+```
+
 ## Configuration
 
 ### Paths
