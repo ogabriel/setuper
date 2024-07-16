@@ -36,6 +36,7 @@ HandleUserDirectories
 HandleUserDirectoriesFromTo
 
 HandleSystemdUnits
+HandleSystemdUnitsDisable
 
 HandleSSHGenKeys
 HandleSSHAddkeys

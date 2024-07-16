@@ -215,6 +215,15 @@ function HandleSystemdUnits() {
     fi
 }
 
+function HandleSystemdUnitsDisable() {
+    for service in ${systemd_unit_system_disable[*]}; do
+        if systemctl is-enabled --quiet $service &>/dev/null; then
+            Info "Disabling systemmd system unit $service"
+            sudo systemctl disable $service
+        fi
+    done
+}
+
 function ParseChmod() {
     local chmod=$1
 
