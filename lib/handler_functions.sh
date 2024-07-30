@@ -72,15 +72,21 @@ function HandlePackagesRemoval() {
 }
 
 function HandlePackages() {
-    if [[ $distro == 'arch' ]]; then
+    case $distro in
+    arch)
         if [[ ${#aur_packages[*]} -gt 0 ]]; then
             local installer=yay
         else
             local installer=pacman
         fi
-    elif [[ $distro == 'debian' ]]; then
+        ;;
+    debian)
         local installer=apt
-    fi
+        ;;
+    *)
+        Error "Installer not found for distro: $distro"
+        ;;
+    esac
 
     if [[ ${#packages[*]} -gt 0 ]] ||
         [[ ${#group_packages[*]} -gt 0 ]] ||
