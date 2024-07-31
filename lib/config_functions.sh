@@ -18,6 +18,13 @@ function LoadConfig() {
     done
 }
 
+function LoadConfigFile() {
+    local file=$config_dir\/$1
+
+    Info "Loading $file"
+    source $file
+}
+
 function User() {
     ValidateFunctionParams 1 $# $FUNCNAME
 
