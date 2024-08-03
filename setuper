@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ -f /usr/lib/setuper/main.sh ]]; then
+if [[ -f /usr/lib/setuper/main.sh ]] && [[ $DEBUG != 1 ]]; then
     source /usr/lib/setuper/main.sh
 elif [[ -f ./lib/main.sh ]]; then
     source ./lib/main.sh
