@@ -1,5 +1,5 @@
 pkgname='setuper'
-pkgver=5
+pkgver=VERSION
 pkgrel=1
 pkgdesc='Manage and setup your system and user environment'
 url=https://github.com/ogabriel/setuper
@@ -20,4 +20,5 @@ package() {
     mkdir -p $pkgdir/usr
     mkdir -p $pkgdir/usr/lib
     cp -r "$srcdir/lib" "$pkgdir/usr/lib/setuper/"
+    chmod -R 644 "$pkgdir/usr/lib/setuper/"
 }
