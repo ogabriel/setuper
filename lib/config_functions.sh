@@ -1,3 +1,5 @@
+source $lib_dir/config/adsf.sh
+
 function LoadConfig() {
     if [[ -f $config_dir/config.sh ]]; then
         Info "Loading config"

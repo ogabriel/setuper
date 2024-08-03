@@ -5,7 +5,6 @@ CheckPermissons
 DefineDistro
 
 source $lib_dir/config_functions.sh
-source $lib_dir/asdf_config_functions.sh
 
 LoadConfig
 
