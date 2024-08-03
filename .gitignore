@@ -1,2 +1,5 @@
 coverage/
 tmp/
+
+setuper.pkg.tar.zst
+setuper.deb
