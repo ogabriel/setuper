@@ -1,5 +1,5 @@
 pkgname='setuper'
-pkgver=VERSION
+pkgver=5
 pkgrel=1
 pkgdesc='Manage and setup your system and user environment'
 url=https://github.com/ogabriel/setuper
@@ -17,5 +17,7 @@ package() {
     )
 
     install -m755 -D "$srcdir/setuper" -t "$pkgdir/usr/bin/"
-    find "$srcdir/lib/"* -type f -exec install -Dm 755 "{}" "$pkgdir/usr/lib/setuper/{}" \;
+    mkdir -p $pkgdir/usr
+    mkdir -p $pkgdir/usr/lib
+    cp -r "$srcdir/lib" "$pkgdir/usr/lib/setuper/"
 }
