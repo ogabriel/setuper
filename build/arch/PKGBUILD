@@ -17,6 +17,5 @@ package() {
     )
 
     install -m755 -D "$srcdir/setuper" -t "$pkgdir/usr/bin/"
-    install -m755 -D "$srcdir/lib/"*.sh -t "$pkgdir/usr/lib/setuper/"
-    install -m755 -D "$srcdir/lib/installers/"*.sh -t "$pkgdir/usr/lib/setuper/installers"
+    install -m755 -D "$srcdir/lib/"* -t "$pkgdir/usr/lib/setuper/"
 }
