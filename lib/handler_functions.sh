@@ -1,3 +1,5 @@
+source $lib_dir/handler/asdf.sh
+
 function HandleGroups() {
     for group in ${groups[*]}; do
         if ! getent group $group &>/dev/null; then
@@ -156,39 +158,6 @@ function HandleFlatpakPackages() {
             flatpak install --assumeyes --noninteractive flathub ${flatpak_packages[*]}
         fi
     fi
-}
-
-function HandlePreInstallASDF() {
-    if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
-        if [[ ${asdf_is_installed:=$(command -v asdf &>/dev/null && echo true || echo false)} = false ]]; then
-            case $distro in
-            arch)
-                Pkg asdf-vm --AUR
-                ;;
-            debian)
-                Pkg git
-                Pkg curl
-                ;;
-            esac
-        fi
-    fi
-}
-
-function HandlePostInstallASDF() {
-    if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
-        case $distro in
-        debian)
-            source $lib_dir/installer/asdf.sh
-            ;;
-        esac
-    fi
-}
-
-function HandleASDFPlugins() {
-    for plugin in ${asdf_plugins[*]}; do
-        Info "Adding ASDF plugin $plugin"
-        asdf plugin add $plugin
-    done
 }
 
 function HandleSystemdUnits() {
