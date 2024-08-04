@@ -1,4 +1,4 @@
-source $lib_dir/config/adsf.sh
+source $lib_dir/config/asdf.sh
 
 function LoadConfig() {
     if [[ -f $config_dir/config.sh ]]; then
