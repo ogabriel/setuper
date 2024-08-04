@@ -28,6 +28,7 @@ function HandlePostInstallASDF() {
     fi
 }
 
+# TODO: remove unused things
 function HandleASDFPlugins() {
     for plugin in ${asdf_plugins[*]}; do
         Info "Adding ASDF plugin $plugin"
