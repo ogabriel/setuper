@@ -55,24 +55,6 @@ function HandleUsers() {
     done
 }
 
-function HandlePackagesRemoval() {
-    if [[ ${#packages_to_remove[*]} -gt 0 ]]; then
-        case $distro in
-        arch)
-            Info "Removing packages with pacman"
-            sudo pacman -Rns --noconfirm ${packages_to_remove[*]}
-            ;;
-        debian)
-            Info "Removing packages with apt"
-            sudo apt-get remove -y ${packages_to_remove[*]}
-            ;;
-        *)
-            Error "Installer not found for distro: $distro"
-            ;;
-        esac
-    fi
-}
-
 function HandlePackages() {
     case $distro in
     arch)
