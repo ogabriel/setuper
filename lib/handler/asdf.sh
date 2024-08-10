@@ -29,10 +29,63 @@ function HandlePostInstallASDF() {
 }
 
 function HandleASDFPlugins() {
-    for plugin in ${asdf_plugins[*]}; do
-        Info "Adding ASDF plugin $plugin"
-        asdf plugin add $plugin
+    local installed_plugins=($(asdf plugin list))
+    local asdf_plugins_to_add=()
+    local asdf_plugins_to_remove=()
+
+    for installed_plugin in ${installed_plugins[*]}; do
+        if __InstalledPluginNotInPlugins? $installed_plugin; then
+            asdf_plugins_to_remove+=($installed_plugin)
+        fi
     done
+
+    if [[ ${#asdf_plugins_to_remove[*]} -gt 0 ]]; then
+        Info "Removing ASDF plugins outside configuration: ${asdf_plugins_to_remove[*]}"
+        Info "Proceed with removal? (Y/n)"
+        read -n 1 key
+        echo
+
+        if [[ $key == "Y" ]]; then
+            for plugin in ${asdf_plugins_to_remove[*]}; do
+                Info "Removing ASDF plugin $plugin"
+                asdf plugin remove $plugin
+            done
+        fi
+    fi
+
+    for plugin in ${asdf_plugins[*]}; do
+        if __PluginNotInInstalledPlugins? $plugin; then
+            asdf_plugins_to_add+=($plugin)
+        fi
+    done
+
+    if [[ ${#asdf_plugins_to_add[*]} -gt 0 ]]; then
+        Info "Adding ASDF plugins: ${asdf_plugins_to_add[*]}"
+
+        for plugin in ${asdf_plugins_to_add[*]}; do
+            asdf plugin add $plugin
+        done
+    fi
+}
+
+function __InstalledPluginNotInPlugins?() {
+    for plugin in ${asdf_plugins[*]}; do
+        if [[ $plugin == $1 ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+function __PluginNotInInstalledPlugins?() {
+    for installed_plugin in ${installed_plugins[*]}; do
+        if [[ $installed_plugin == $1 ]]; then
+            return 1
+        fi
+    done
+
+    return 0
 }
 
 function ASDFPluginDependency() {
