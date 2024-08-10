@@ -28,28 +28,12 @@ function Pkg() {
 
 function Package() {
     if [[ $# -eq 1 ]]; then
-        case $distro in
-        arch)
-            if ! pacman -Q $1 &>/dev/null; then
-                packages+=($1)
-            fi
-            ;;
-        debian)
-            if ! dpkg -l $1 &>/dev/null; then
-                packages+=($1)
-            fi
-            ;;
-        *)
-            Error "Could not check if package $1 is installed on $distro"
-            ;;
-        esac
+        packages+=($1)
     elif [[ $2 == '--aur' ]] || [[ $2 == '--AUR' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            if ! pacman -Q $1 &>/dev/null; then
-                aur_packages+=($1)
-            fi
+            aur_packages+=($1)
         else
             Error "AUR packages are only supported on Arch Linux"
         fi
@@ -57,9 +41,7 @@ function Package() {
         ValidateExactFunctionParams 2 $# $FUNCNAME
 
         if [[ $distro == 'arch' ]]; then
-            if ! pacman -Qg $1 &>/dev/null; then
-                group_packages+=($1)
-            fi
+            group_packages+=($1)
         else
             Error "Group packages are only supported on Arch Linux"
         fi
@@ -69,21 +51,7 @@ function Package() {
         local file=$sourced_package_dir${2#--source=}
 
         if [[ -f $file ]]; then
-            case $distro in
-            arch)
-                if ! pacman -Q $1 &>/dev/null; then
-                    sourced_packages+=("$1 $2")
-                fi
-                ;;
-            debian)
-                if ! dpkg -l $1 &>/dev/null; then
-                    sourced_packages+=("$1 $2")
-                fi
-                ;;
-            *)
-                Error "Could not check if package $1 is installed on $distro"
-                ;;
-            esac
+            sourced_packages+=("$1 $2")
         else
             Error "Invalid package source file $file"
         fi

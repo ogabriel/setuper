@@ -1,4 +1,5 @@
 source $lib_dir/handler/asdf.sh
+source $lib_dir/handler/packages.sh
 
 function HandleGroups() {
     for group in ${groups[*]}; do
@@ -53,98 +54,6 @@ function HandleUsers() {
             fi
         fi
     done
-}
-
-function HandlePackagesRemoval() {
-    if [[ ${#packages_to_remove[*]} -gt 0 ]]; then
-        case $distro in
-        arch)
-            Info "Removing packages with pacman"
-            sudo pacman -Rns --noconfirm ${packages_to_remove[*]}
-            ;;
-        debian)
-            Info "Removing packages with apt"
-            sudo apt-get remove -y ${packages_to_remove[*]}
-            ;;
-        *)
-            Error "Installer not found for distro: $distro"
-            ;;
-        esac
-    fi
-}
-
-function HandlePackages() {
-    case $distro in
-    arch)
-        if [[ ${#aur_packages[*]} -gt 0 ]]; then
-            local installer=yay
-        else
-            local installer=pacman
-        fi
-        ;;
-    debian)
-        local installer=apt
-        ;;
-    *)
-        Error "Installer not found for distro: $distro"
-        ;;
-    esac
-
-    if [[ ${#packages[*]} -gt 0 ]] ||
-        [[ ${#group_packages[*]} -gt 0 ]] ||
-        [[ ${#aur_packages[*]} -gt 0 ]]; then
-
-        case $installer in
-        pacman)
-            Info "Installing packages with pacman"
-            sudo pacman -Sy --noconfirm --needed archlinux-keyring
-            sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
-            ;;
-        yay)
-            sudo pacman -Sy --noconfirm --needed archlinux-keyring
-
-            if ! pacman -Q yay &>/dev/null; then
-                source $lib_dir/installer/yay.sh
-            fi
-
-            Info "Installing packages with yay"
-            yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
-            ;;
-        apt)
-            Info "Installing packages with apt"
-            sudo apt-get update
-            sudo apt-get install -y ${packages[*]}
-            ;;
-        *)
-            Error "Installer not found for distro: $distro"
-            ;;
-        esac
-    fi
-}
-
-function HandleSourcedPackages() {
-    for ((i = 0; i < ${#sourced_packages[@]}; i++)); do
-        local sourced_package_config
-        readarray -d ' ' sourced_package_config <<<"${sourced_packages[$i]}"
-
-        local package=${sourced_package_config[0]}
-        local file=$sourced_package_dir${sourced_package_config[1]#--source=}
-
-        case $distro in
-        arch)
-            Info "Installing sourced package $package with pacman"
-            sudo pacman -U --noconfirm $file
-            ;;
-        debian)
-            Info "Installing sourced package $package with dpkg"
-            sudo dpkg -i $file
-            ;;
-        *)
-            Error "Installer not found for distro: $distro"
-            ;;
-        esac
-    done
-
 }
 
 function HandleFlatpakPackages() {
