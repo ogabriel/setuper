@@ -1,8 +1,8 @@
 source $lib_dir/config/asdf.sh
 source $lib_dir/config/packages.sh
 source $lib_dir/config/ssh.sh
-source $lib_dir/config/files_and_directories.sh
 source $lib_dir/config/systemd.sh
+source $lib_dir/config/files_and_directories.sh
 source $lib_dir/config/users_and_groups.sh
 
 function LoadConfig() {

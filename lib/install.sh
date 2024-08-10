@@ -4,7 +4,7 @@ CheckConfig
 CheckPermissons
 DefineDistro
 
-source $lib_dir/config_functions.sh
+source $lib_dir/config/main.sh
 
 LoadConfig
 
