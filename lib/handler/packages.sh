@@ -123,29 +123,66 @@ function __InstalledPackageNotInGroupPackages?() {
 }
 
 function __HandleArchPackagesInstallation() {
-    if [[ ${#aur_packages[*]} -gt 0 ]]; then
-        local installer=yay
-    else
-        local installer=pacman
-    fi
+    local packages_to_install=()
 
-    case $installer in
-    pacman)
-        Info "Installing packages with pacman"
-        sudo pacman -Sy --noconfirm --needed archlinux-keyring
-        sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
-        ;;
-    yay)
-        sudo pacman -Sy --noconfirm --needed archlinux-keyring
+    for package in ${packages[*]}; do
+        if ! pacman -Qq $package &>/dev/null; then
+            packages_to_install+=($package)
+        fi
+    done
 
-        if ! pacman -Q yay &>/dev/null; then
-            source $lib_dir/installer/yay.sh
+    for package in ${group_packages[*]}; do
+        local group_packages=($(pacman -Sgq $package))
+
+        for group_package in ${group_packages[*]}; do
+            if ! pacman -Qq $group_package &>/dev/null; then
+                packages_to_install+=($group_package)
+            fi
+        done
+    done
+
+    for package in ${aur_packages[*]}; do
+        if ! pacman -Qq $package &>/dev/null; then
+            packages_to_install+=($package)
+        fi
+    done
+
+    if [[ ${#packages_to_install[*]} -gt 0 ]]; then
+        Info "Installing packages from configuration: ${packages_to_install[*]}"
+        Info "Proceed with installation? [Y/n]"
+        read -n 1 key
+        echo
+
+        if [[ ${#aur_packages[*]} -gt 0 ]]; then
+            local installer=yay
+        else
+            local installer=pacman
         fi
 
-        Info "Installing packages with yay"
-        yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
-        ;;
-    esac
+        if [[ $key == "Y" ]]; then
+            sudo pacman -Sy --noconfirm --needed archlinux-keyring &>/dev/null
+
+            case $installer in
+            pacman)
+                Info "Installing packages with pacman"
+                sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]} &>/dev/null
+                ;;
+            yay)
+
+                if ! pacman -Q yay &>/dev/null; then
+                    source $lib_dir/installer/yay.sh
+                fi
+
+                Info "Installing packages with yay"
+                yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]} &>/dev/null
+                ;;
+            esac
+        else
+            Info "Packages from configuration not installed"
+        fi
+    else
+        Info "No packages from configuration to install"
+    fi
 }
 
 function __HandleDebianPackages() {
