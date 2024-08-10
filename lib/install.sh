@@ -10,7 +10,6 @@ LoadConfig
 
 source $lib_dir/handler/main.sh
 
-HandlePackagesRemoval
 HandleFlatpakPackages
 HandlePreInstallASDF
 
