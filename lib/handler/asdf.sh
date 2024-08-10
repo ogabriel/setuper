@@ -29,6 +29,11 @@ function HandleASDFInstall() {
 }
 
 function HandleASDFPlugins() {
+    __HandleASDFPluginsRemovalAndAdd
+    __HandleASDFPluginsConfig
+}
+
+function __HandleASDFPluginsRemovalAndAdd() {
     local installed_plugins=($(asdf plugin list))
     local asdf_plugins_to_add=()
     local asdf_plugins_to_remove=()
@@ -86,6 +91,43 @@ function __PluginNotInInstalledPlugins?() {
     done
 
     return 0
+}
+
+function __HandleASDFPluginsConfig() {
+    if [[ ${#asdf_plugins_config[*]} -gt 0 ]]; then
+        asdf plugin update --all &>/dev/null
+
+        for ((i = 0; i < ${#asdf_plugins_config[*]}; i++)); do
+            __HandleASDFPluginConfig ${asdf_plugins_config[$i]}
+        done
+    fi
+}
+
+function __HandleASDFPluginConfig() {
+    while [[ $# -gt 0 ]]; do
+        if [[ $1 =~ --version=.* ]]; then
+            local version=${1#--version=}
+        elif [[ $1 =~ --global ]]; then
+            local global=true
+        else
+            local plugin=$1
+        fi
+
+        shift
+    done
+
+    if [[ $version == "latest" ]]; then
+        version=$(asdf latest $plugin)
+    fi
+
+    if [[ -z $(asdf list $plugin | grep $version) ]]; then
+        Info "Installing $plugin $version"
+        asdf install $plugin $version &>/dev/null
+
+        if [[ -n $global ]]; then
+            asdf global $plugin $version &>/dev/null
+        fi
+    fi
 }
 
 function __AddPluginDependencies() {

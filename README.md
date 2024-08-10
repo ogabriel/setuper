@@ -65,6 +65,8 @@ sourced_package_dir=$HOME/.mypackages/
     - `--comment` - comment for the key, for github this is your email
 - `SSHAddKey` - adds the key to your agent (idont know if this will world correctly)
 - `ASDFPlugin pluginname` - allows to install asdf automatically on your distro and handle specific dependencies for each plugin - each language has its specifc dependencies for each language and for each distro, so this function handles all that for you
+    - `--version=version_name/latest` - install that specific version
+    - `--global` - auto installs that version as global
 
 ### Execution order
 
