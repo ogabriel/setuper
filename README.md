@@ -8,12 +8,18 @@ Most arch and debian based distros should work fine.
 
 ## Instalation
 
-Go to the release page and download the debian or arch package.
+Go to the release page and download the debian or arch package. Or use one of these commands:
+
+Arch based:
 
 ```bash
-wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.deb
-# or
-wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.pkg.tar.zst
+wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.pkg.tar.zst && sudo pacman -U setuper.pkg.tar.zst && rm setuper.pkg.tar.zst
+```
+
+Debian based:
+
+```bash
+wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.deb && sudo dpkg -i setuper.deb && rm setuper.deb
 ```
 
 ## Configuration
