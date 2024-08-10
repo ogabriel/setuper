@@ -8,7 +8,7 @@ source $lib_dir/config/main.sh
 
 LoadConfig
 
-source $lib_dir/handler_functions.sh
+source $lib_dir/handler/main.sh
 
 HandlePackagesRemoval
 HandleFlatpakPackages
