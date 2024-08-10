@@ -1,4 +1,4 @@
-function HandlePreInstallASDF() {
+function HandleASDFDependencies() {
     if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
         if [[ ${asdf_is_installed:=$(command -v asdf &>/dev/null && echo true || echo false)} = false ]]; then
             case $distro in
@@ -12,13 +12,13 @@ function HandlePreInstallASDF() {
             esac
         else
             for plugin in ${asdf_plugins[*]}; do
-                ASDFPluginDependency $plugin
+                __AddPluginDependencies $plugin
             done
         fi
     fi
 }
 
-function HandlePostInstallASDF() {
+function HandleASDFInstall() {
     if [[ ${#asdf_plugins[*]} -gt 0 ]]; then
         case $distro in
         debian)
@@ -88,7 +88,7 @@ function __PluginNotInInstalledPlugins?() {
     return 0
 }
 
-function ASDFPluginDependency() {
+function __AddPluginDependencies() {
     case $1 in
     elixir)
         __elixir

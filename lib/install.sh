@@ -11,13 +11,12 @@ LoadConfig
 source $lib_dir/handler/main.sh
 
 HandleFlatpakPackages
-HandlePreInstallASDF
+HandleASDFDependencies
 
 HandlePackages
 HandleSourcedPackages
 
-HandlePostInstallASDF
-
+HandleASDFInstall
 HandleASDFPlugins
 
 HandleSystemFiles
