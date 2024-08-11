@@ -40,7 +40,7 @@ function HandleSystemFile() {
     fi
 
     if [[ -n $chmod ]]; then
-        if [[ "$(stat -c %a $to_file)" != $chmod ]]; then
+        if [[ "$(sudo stat -c %a $to_file)" != $chmod ]]; then
             Info "Changing permissions of file $to_file to $chmod"
             sudo chmod $chmod $to_file
         fi
