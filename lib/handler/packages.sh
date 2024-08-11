@@ -38,6 +38,10 @@ function __HandleArchPackagesRemoval() {
 
     for installed_package in ${installed_packages[*]}; do
         if [[ $installed_package != "setuper" ]] &&
+            [[ $installed_package != "yay" ]] &&
+            [[ $installed_package != "yay-bin" ]] &&
+            [[ $installed_package != "pacman" ]] &&
+            [[ $installed_package != "base" ]] &&
             __InstalledPackageNotInPackages? $installed_package &&
             __InstalledPackageNotInAurPackages? $installed_package &&
             __InstalledPackageNotInAurPackages? $installed_package &&
