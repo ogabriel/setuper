@@ -22,6 +22,18 @@ Debian based:
 wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.deb && sudo dpkg -i setuper.deb && rm setuper.deb
 ```
 
+## CLI
+
+```bash
+setuper install
+```
+
+If you are running as root:
+
+```bash
+sudo su MY_USER setuper install
+```
+
 ## Configuration
 
 ### Paths
