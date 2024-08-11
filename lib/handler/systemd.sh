@@ -59,6 +59,12 @@ function __AllUnitsFound?() {
         fi
     done
 
+    for service in ${systemd_unit_system_disable[*]}; do
+        if ! systemctl list-unit-files --quiet $service &>/dev/null; then
+            return 1
+        fi
+    done
+
     for service in ${systemd_unit_system_mask[*]}; do
         if ! systemctl list-unit-files --quiet $service &>/dev/null; then
             return 1
