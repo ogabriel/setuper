@@ -169,6 +169,7 @@ If you already has a dotfiles repository you can add it to the `setuper` reposit
 - [ ] allow to be run as root
 - [ ] add a way to use transactions/checksums to avoid doing too much work
 - [ ] add way to download the package on other places, like a ppa and on AUR
+- [ ] add options to be less strict and dont ask as many questions
 
 ## Motivation, Inspirations and alternatives
 
