@@ -1,1 +1,1 @@
-ACTION=="add", SUBSYSTEM=="module", KERNEL=="i915", RUN+="/usr/bin/proptest -M i915 CONNECTOR_NUMBER connector ID_FROM_SECOND_COLUMN 1"
+ACTION=="add", SUBSYSTEM=="module", KERNEL=="i915", RUN+="/usr/local/bin/intel-wayland-fix-full-color"
