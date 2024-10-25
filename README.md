@@ -176,12 +176,12 @@ If you already has a dotfiles repository you can add it to the `setuper` reposit
 
 ### Future
 
+- [ ] optional strict mode for more control over system
+- [ ] add options to be less strict and dont ask as many questions
 - [ ] add unit tests - right now the project only works through hope
-- [ ] strict mode for more control over system
-- [ ] allow to be run as root
 - [ ] add a way to use transactions/checksums to avoid doing too much work
 - [ ] add way to download the package on other places, like a ppa and on AUR
-- [ ] add options to be less strict and dont ask as many questions
+- [ ] allow to be run as root
 
 ## Motivation, Inspirations and alternatives
 
