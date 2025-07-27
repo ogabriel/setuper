@@ -25,13 +25,13 @@ wget https://github.com/ogabriel/setuper/releases/latest/download/setuper.deb &&
 ## CLI
 
 ```bash
-setuper install
+setuper apply
 ```
 
 If you are running as root:
 
 ```bash
-sudo su MY_USER setuper install
+sudo su MY_USER setuper apply
 ```
 
 ## Configuration

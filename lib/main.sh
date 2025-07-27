@@ -7,7 +7,7 @@ Usage:
     More information in the repository: https://github.com/ogabriel/setuper
 
 Options:
-    install    Install everything configured in the config files
+    apply   Apply the configuration from ~/.config/setuper/
     "
 else
     readonly lib_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -15,7 +15,11 @@ else
 
     case $1 in
     install)
-        source $lib_dir/install.sh
+        echo "DEPRECATED: Use 'apply' instead of 'install'."
+        source $lib_dir/apply.sh
+        ;;
+    apply)
+        source $lib_dir/apply.sh
         ;;
     *)
         echo "Invalid option"
