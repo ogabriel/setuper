@@ -8,6 +8,7 @@ Usage:
 
 Options:
     apply   Apply the configuration from ~/.config/setuper/
+    clean   Clean unused packages
     "
 else
     readonly lib_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -20,6 +21,9 @@ else
         ;;
     apply)
         source $lib_dir/apply.sh
+        ;;
+    clean)
+        source $lib_dir/clean.sh
         ;;
     *)
         echo "Invalid option"
