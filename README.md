@@ -41,13 +41,14 @@ sudo su MY_USER setuper apply
 The default path for the config is on `$HOME/.config/setuper/`
 
 And inside that you can have three folders with the files to be used:
+- `./config` - for the bash configuration files
 - `./system` - for the system files and directories, these files will be copied to your system with the `sudo` command
     - it's not a link because it's not really recommended to use links from user files to root
 - `./user` - user files and directories, will be soft linked to your files
     - these files should be mostly the dotfiles
 - `./packages` - from your sourced files
 
-you can also define custom locations to these files with a `$HOME/.config/setuper/config.sh`, like:
+you can also define custom locations to these files with a `$HOME/.config/setuper/config/entrypoint.sh`, like:
 
 ```bash
 system_files_dir=$HOME/.system/
@@ -94,7 +95,7 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 ### Sourcing order
 
-When loading the configuration files, the file `config.sh` will be sourced first, and then the rest by alphabetical order
+When loading the configuration files, the file `entrypoint.sh` will be sourced first, and then the rest by alphabetical order
 
 ### Examples of configurations
 
@@ -114,10 +115,10 @@ if [[ "$HOSTNAME" == "laptop" ]]; then
 fi
 ```
 
-Sometimes you want to define a variable to be used on other files, so you can set a variable on the `config.sh` to be later used:
+Sometimes you want to define a variable to be used on other files, so you can set a variable on the `entrypoint.sh` to be later used:
 
 ```bash
-# on the config.sh file
+# on the entrypoint.sh file
 case $HOSTNAME in
 my_work_PC)
     window_manager=sway

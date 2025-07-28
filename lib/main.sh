@@ -13,6 +13,7 @@ Options:
 else
     readonly lib_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
     readonly config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/setuper
+    readonly config_files_dir=$config_dir/config
 
     case $1 in
     install)
