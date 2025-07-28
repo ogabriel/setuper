@@ -24,10 +24,3 @@ function LoadConfig() {
         fi
     done
 }
-
-function LoadConfigFile() {
-    local file=$config_dir\/$1
-
-    Info "Loading $file"
-    source $file
-}
