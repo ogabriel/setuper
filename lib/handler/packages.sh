@@ -174,7 +174,7 @@ function __HandleArchPackagesInstallation() {
             yay)
 
                 if ! pacman -Q yay &>/dev/null; then
-                    source $lib_dir/installer/yay.sh
+                    source $lib_dir/installers/yay.sh
                 fi
 
                 Info "Installing packages with yay"
