@@ -68,9 +68,14 @@ sourced_package_dir=$HOME/.mypackages/
     - `--flatpak` - flatpak packages
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
 - `RemovePkg/RemovePackage packagename` - removes said package
-- `SystemdUnitSystemEnable unitname` - enables a systemd system unit
+- `SystemdUnitSystemEnable unitname` - enables a systemd system unit (auto-unmasks if masked)
+- `SystemdUnitSystemDisable unitname` - disables a systemd system unit
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit
-- `SystemdUnitUserEnable unitname` -enables a system user unit
+- `SystemdUnitSystemUnmask unitname` - unmasks a systemd system unit
+- `SystemdUnitUserEnable unitname` - enables a system user unit (auto-unmasks if masked)
+- `SystemdUnitUserDisable unitname` - disables a system user unit
+- `SystemdUnitUserMask unitname` - masks a system user unit
+- `SystemdUnitUserUnmask unitname` - unmasks a system user unit
 - `SystemFile file` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
 - `SystemFileFromTo from_file to_file` - same as above, but you can rename
 - `SystemDirectory directory` - copies a directory like `system/etc/sddm.conf.d` to `/etc/sddm.conf.d`
