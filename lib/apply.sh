@@ -1,6 +1,5 @@
 source $lib_dir/helper_functions.sh
 
-CheckConfig
 CheckPermissons
 DefineDistro
 
