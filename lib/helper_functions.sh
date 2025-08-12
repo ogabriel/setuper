@@ -25,7 +25,7 @@ function CheckConfig() {
     fi
 
     if ! [[ -n "$(find $config_files_dir -maxdepth 1 -type f -size +0 -iname "*.sh" -print -quit)" ]]; then
-        Error "No valid .sh files found in $config_dir"
+        Error "No valid .sh files found in $config_files_dir"
     fi
 }
 

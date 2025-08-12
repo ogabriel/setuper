@@ -48,9 +48,11 @@ And inside that you can have three folders with the files to be used:
     - these files should be mostly the dotfiles
 - `./packages` - from your sourced files
 
-you can also define custom locations to these files with a `$HOME/.config/setuper/config/entrypoint.sh`, like:
+you can also define custom locations to these files with a `$HOME/.config/setuper/init.sh`, like:
 
 ```bash
+config_files_dir=$HOME/.debian_config/
+config_files_dir=$HOME/.arch_config/
 system_files_dir=$HOME/.system/
 user_files_dir=$HOME/.dotfiles/
 sourced_package_dir=$HOME/.mypackages/
@@ -68,9 +70,14 @@ sourced_package_dir=$HOME/.mypackages/
     - `--flatpak` - flatpak packages
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
 - `RemovePkg/RemovePackage packagename` - removes said package
-- `SystemdUnitSystemEnable unitname` - enables a systemd system unit
+- `SystemdUnitSystemEnable unitname` - enables a systemd system unit (auto-unmasks if masked)
+- `SystemdUnitSystemDisable unitname` - disables a systemd system unit
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit
-- `SystemdUnitUserEnable unitname` -enables a system user unit
+- `SystemdUnitSystemUnmask unitname` - unmasks a systemd system unit
+- `SystemdUnitUserEnable unitname` - enables a system user unit (auto-unmasks if masked)
+- `SystemdUnitUserDisable unitname` - disables a system user unit
+- `SystemdUnitUserMask unitname` - masks a system user unit
+- `SystemdUnitUserUnmask unitname` - unmasks a system user unit
 - `SystemFile file` - copies a system file with superuser permissions, like a udev rule, tlp config etc.
 - `SystemFileFromTo from_file to_file` - same as above, but you can rename
 - `SystemDirectory directory` - copies a directory like `system/etc/sddm.conf.d` to `/etc/sddm.conf.d`
@@ -95,7 +102,7 @@ The order is thought to not cause any problems, so for example, the packages wil
 
 ### Sourcing order
 
-When loading the configuration files, the file `entrypoint.sh` will be sourced first, and then the rest by alphabetical order
+When loading the configuration files, the file `init.sh` will be sourced first, and then the rest by alphabetical order
 
 ### Examples of configurations
 
@@ -115,10 +122,10 @@ if [[ "$HOSTNAME" == "laptop" ]]; then
 fi
 ```
 
-Sometimes you want to define a variable to be used on other files, so you can set a variable on the `entrypoint.sh` to be later used:
+Sometimes you want to define a variable to be used on other files, so you can set a variable on the `init.sh` to be later used:
 
 ```bash
-# on the entrypoint.sh file
+# on the init.sh file
 case $HOSTNAME in
 my_work_PC)
     window_manager=sway
