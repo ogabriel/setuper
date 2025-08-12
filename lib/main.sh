@@ -26,6 +26,9 @@ else
     clean)
         source $lib_dir/clean.sh
         ;;
+    upgrade)
+        source $lib_dir/upgrade.sh
+        ;;
     *)
         echo "Invalid option"
         ;;
