@@ -9,6 +9,7 @@ Usage:
 Options:
     apply   Apply the configuration from ~/.config/setuper/
     clean   Clean unused packages
+    upgrade Upgrade setuper to the latest version
     "
 else
     readonly lib_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
