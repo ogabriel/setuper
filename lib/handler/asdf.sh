@@ -313,7 +313,7 @@ function __ruby() {
     case $distro in
     arch)
         Pkg base-devel
-        Pkg rust
+        Pkg cargo
         Pkg libffi
         Pkg libyaml
         Pkg openssl
