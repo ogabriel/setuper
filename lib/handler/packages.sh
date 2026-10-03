@@ -164,12 +164,12 @@ function __HandleArchPackagesInstallation() {
                 local installer=pacman
             fi
 
-            sudo pacman -Sy --noconfirm --needed archlinux-keyring
+            sudo pacman -Sy $pacman_noconfirm --needed archlinux-keyring
 
             case $installer in
             pacman)
                 Info "Installing packages with pacman"
-                sudo pacman -S --noconfirm --needed ${packages[*]} ${group_packages[*]}
+                sudo pacman -S $pacman_noconfirm --needed ${packages[*]} ${group_packages[*]}
                 ;;
             yay)
 
@@ -178,7 +178,7 @@ function __HandleArchPackagesInstallation() {
                 fi
 
                 Info "Installing packages with yay"
-                yay -S --noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
+                yay -S $pacman_noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
                 ;;
             esac
         else
@@ -192,7 +192,7 @@ function __HandleArchPackagesInstallation() {
 function __HandleDebianPackages() {
     Info "Installing packages with apt"
     sudo apt-get update
-    sudo apt-get install -y ${packages[*]}
+    sudo apt-get install $apt_yes ${packages[*]}
 }
 
 function HandleSourcedPackages() {
@@ -206,7 +206,7 @@ function HandleSourcedPackages() {
         case $distro in
         arch)
             Info "Installing sourced package $package with pacman"
-            sudo pacman -U --noconfirm $file
+            sudo pacman -U $pacman_noconfirm $file
             ;;
         debian)
             Info "Installing sourced package $package with dpkg"

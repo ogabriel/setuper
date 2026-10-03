@@ -69,3 +69,11 @@ function Package() {
         Error "Invalid flag $2 for $FUNCNAME"
     fi
 }
+
+pacman_noconfirm="--noconfirm"
+apt_yes="-y"
+
+function DisableNonInteractiveMode() {
+    pacman_noconfirm=""
+    apt_yes=""
+}
