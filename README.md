@@ -70,6 +70,8 @@ sourced_package_dir=$HOME/.mypackages/
     - `--flatpak` - flatpak packages
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
 - `RemovePkg/RemovePackage packagename` - removes said package
+- `DisableNonInteractiveMode` - allows package managers (pacman, yay, apt) to prompt for user confirmation during installation
+- `InstallAURSeparately` - separates pacman and yay package installations, instead of running both at the same time
 - `SystemdUnitSystemEnable unitname` - enables a systemd system unit (auto-unmasks if masked)
 - `SystemdUnitSystemDisable unitname` - disables a systemd system unit
 - `SystemdUnitSystemMask unitname` - masks a systemd system unit

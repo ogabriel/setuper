@@ -72,8 +72,13 @@ function Package() {
 
 pacman_noconfirm="--noconfirm"
 apt_yes="-y"
+install_aur_separately=false
 
 function DisableNonInteractiveMode() {
     pacman_noconfirm=""
     apt_yes=""
+}
+
+function InstallAURSeparately() {
+    install_aur_separately=true
 }

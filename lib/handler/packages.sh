@@ -158,27 +158,42 @@ function __HandleArchPackagesInstallation() {
         echo
 
         if [[ $key == "Y" ]]; then
-            if [[ ${#aur_packages[*]} -gt 0 ]]; then
-                local installer=yay
+            if [[ ${#aur_packages[*]} -gt 0 && $install_aur_separately == true ]]; then
+                local installer=separate
+            elif [[ ${#aur_packages[*]} -gt 0 ]]; then
+                local installer=aur
             else
                 local installer=pacman
             fi
 
-            sudo pacman -Sy $pacman_noconfirm --needed archlinux-keyring
+            echo $installer
+
+            sudo pacman -Sy --noconfirm --needed archlinux-keyring
 
             case $installer in
             pacman)
                 Info "Installing packages with pacman"
                 sudo pacman -S $pacman_noconfirm --needed ${packages[*]} ${group_packages[*]}
                 ;;
-            yay)
-
+            aur | separate)
                 if ! pacman -Q yay &>/dev/null; then
                     source $lib_dir/installers/yay.sh
                 fi
-
+                ;;&
+            aur)
                 Info "Installing packages with yay"
                 yay -S $pacman_noconfirm --needed ${packages[*]} ${group_packages[*]} ${aur_packages[*]}
+                ;;
+            separate)
+                local pacman_pkgs=(${packages[*]} ${group_packages[*]})
+
+                if [[ ${#pacman_pkgs[*]} -gt 0 ]]; then
+                    Info "Installing packages with pacman"
+                    sudo pacman -S $pacman_noconfirm --needed ${pacman_pkgs[*]}
+                fi
+
+                Info "Installing packages with yay"
+                yay -S $pacman_noconfirm --needed ${aur_packages[*]}
                 ;;
             esac
         else
