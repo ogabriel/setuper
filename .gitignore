@@ -3,3 +3,5 @@ tmp/
 
 setuper.pkg.tar.zst
 setuper.deb
+
+lib/commands/debug.sh

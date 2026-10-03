@@ -18,16 +18,19 @@ else
     case $1 in
     install)
         echo "DEPRECATED: Use 'apply' instead of 'install'."
-        source $lib_dir/apply.sh
+        source $lib_dir/commands/apply.sh
         ;;
     apply)
-        source $lib_dir/apply.sh
+        source $lib_dir/commands/apply.sh
         ;;
     clean)
-        source $lib_dir/clean.sh
+        source $lib_dir/commands/clean.sh
         ;;
     upgrade)
-        source $lib_dir/upgrade.sh
+        source $lib_dir/commands/upgrade.sh
+        ;;
+    debug)
+        source $lib_dir/commands/debug.sh
         ;;
     *)
         echo "Invalid option"
