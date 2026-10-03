@@ -1,4 +1,9 @@
 function HandleSystemdUnits() {
+    local cache_dir="$config_dir/.cache"
+    mkdir -p "$cache_dir"
+
+    __ReverseRemovedUnits "$cache_dir"
+
     if [[ ${#systemd_unit_system_enable[*]} -gt 0 ]] ||
         [[ ${#systemd_unit_system_mask[*]} -gt 0 ]] ||
         [[ ${#systemd_unit_system_unmask[*]} -gt 0 ]] ||
@@ -26,6 +31,8 @@ function HandleSystemdUnits() {
         __HandleUserDisable
         __HandleUserEnable
     fi
+
+    __WriteSystemdCache "$cache_dir"
 }
 
 function __HandleSystemMask() {
@@ -186,4 +193,50 @@ function __WarnConflicts() {
             fi
         done
     done
+}
+
+function __ReverseRemovedUnits() {
+    local cache_dir=$1
+
+    __ReverseFromCache "$cache_dir/systemd_unit_system_enable"  systemd_unit_system_enable  "sudo systemctl disable"
+    __ReverseFromCache "$cache_dir/systemd_unit_system_disable" systemd_unit_system_disable "sudo systemctl enable"
+    __ReverseFromCache "$cache_dir/systemd_unit_system_mask"    systemd_unit_system_mask    "sudo systemctl unmask"
+    __ReverseFromCache "$cache_dir/systemd_unit_system_unmask"  systemd_unit_system_unmask  "sudo systemctl mask"
+    __ReverseFromCache "$cache_dir/systemd_unit_user_enable"    systemd_unit_user_enable    "systemctl --user disable"
+    __ReverseFromCache "$cache_dir/systemd_unit_user_disable"   systemd_unit_user_disable   "systemctl --user enable"
+    __ReverseFromCache "$cache_dir/systemd_unit_user_mask"      systemd_unit_user_mask      "systemctl --user unmask"
+    __ReverseFromCache "$cache_dir/systemd_unit_user_unmask"    systemd_unit_user_unmask    "systemctl --user mask"
+}
+
+function __ReverseFromCache() {
+    local cache_file=$1
+    local -n __arr=$2
+    local reverse_cmd=$3
+
+    [[ -f $cache_file ]] || return 0
+
+    while IFS= read -r unit; do
+        [[ -z $unit ]] && continue
+        local found=false
+        for item in "${__arr[@]}"; do
+            [[ $item == "$unit" ]] && found=true && break
+        done
+        if [[ $found == false ]]; then
+            Info "Cache: running '$reverse_cmd $unit' (unit removed from config)"
+            $reverse_cmd "$unit"
+        fi
+    done < "$cache_file"
+}
+
+function __WriteSystemdCache() {
+    local cache_dir=$1
+
+    printf '%s\n' "${systemd_unit_system_enable[@]}"  > "$cache_dir/systemd_unit_system_enable"
+    printf '%s\n' "${systemd_unit_system_disable[@]}" > "$cache_dir/systemd_unit_system_disable"
+    printf '%s\n' "${systemd_unit_system_mask[@]}"    > "$cache_dir/systemd_unit_system_mask"
+    printf '%s\n' "${systemd_unit_system_unmask[@]}"  > "$cache_dir/systemd_unit_system_unmask"
+    printf '%s\n' "${systemd_unit_user_enable[@]}"    > "$cache_dir/systemd_unit_user_enable"
+    printf '%s\n' "${systemd_unit_user_disable[@]}"   > "$cache_dir/systemd_unit_user_disable"
+    printf '%s\n' "${systemd_unit_user_mask[@]}"      > "$cache_dir/systemd_unit_user_mask"
+    printf '%s\n' "${systemd_unit_user_unmask[@]}"    > "$cache_dir/systemd_unit_user_unmask"
 }
