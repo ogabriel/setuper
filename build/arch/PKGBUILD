@@ -20,5 +20,6 @@ package() {
     mkdir -p $pkgdir/usr
     mkdir -p $pkgdir/usr/lib
     cp -r "$srcdir/lib" "$pkgdir/usr/lib/setuper/"
-    chmod -R 644 "$pkgdir/usr/lib/setuper/"
+    find "$pkgdir/usr/lib/setuper/" -type d -exec chmod 755 {} +
+    find "$pkgdir/usr/lib/setuper/" -type f -exec chmod 644 {} +
 }
