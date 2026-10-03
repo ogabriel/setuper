@@ -29,6 +29,11 @@ function HandleASDFInstall() {
 }
 
 function HandleASDFPlugins() {
+    if ! command -v asdf &>/dev/null; then
+        Warn "asdf is not installed, skipping ASDF plugin handling"
+        return 0
+    fi
+
     __HandleASDFPluginsRemovalAndAdd
     __HandleASDFPluginsConfig
 }
