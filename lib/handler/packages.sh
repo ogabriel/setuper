@@ -275,9 +275,10 @@ function HandlePkgbuildPackages() {
         local pkgrel=$(grep -oP '^\s*pkgrel = \K.+' <<<"$srcinfo" | head -1)
         local version=${epoch:+$epoch:}$pkgver-$pkgrel
 
-        local installed_version=$(pacman -Q $package 2>/dev/null | cut -d ' ' -f 2 || echo "")
+        # pacman -Q also matches packages that provide $package
+        local installed=$(pacman -Q $package 2>/dev/null || echo "")
 
-        if [[ $installed_version == $version ]]; then
+        if [[ $installed == "$package $version" ]]; then
             Info "PKGBUILD package $package is up to date"
             continue
         fi
