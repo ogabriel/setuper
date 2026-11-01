@@ -44,7 +44,6 @@ function __HandleArchPackagesRemoval() {
             [[ $installed_package != "base" ]] &&
             __InstalledPackageNotInPackages? $installed_package &&
             __InstalledPackageNotInAurPackages? $installed_package &&
-            __InstalledPackageNotInAurPackages? $installed_package &&
             __InstalledPackageNotInSourcedPackages? $installed_package &&
             __InstalledPackageNotInGroupPackages? $installed_package; then
             packages_to_remove+=($installed_package)
