@@ -261,7 +261,7 @@ function HandlePkgbuildPackages() {
         local pkgbuild_package_config
         readarray -d ' ' pkgbuild_package_config <<<"${pkgbuild_packages[$i]}"
 
-        local package=${pkgbuild_package_config[0]}
+        local package=${pkgbuild_package_config[0]//[[:space:]]/}
         local dir=${pkgbuild_package_config[1]//[[:space:]]/}
 
         local srcinfo=$(cd $dir && makepkg --printsrcinfo)
