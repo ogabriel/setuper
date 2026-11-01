@@ -14,6 +14,7 @@ HandleASDFDependencies
 
 HandlePackages
 HandleSourcedPackages
+HandlePkgbuildPackages
 
 HandleASDFInstall
 HandleASDFPlugins

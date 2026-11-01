@@ -47,6 +47,7 @@ And inside that you can have three folders with the files to be used:
 - `./user` - user files and directories, will be soft linked to your files
     - these files should be mostly the dotfiles
 - `./packages` - from your sourced files
+- `./pkgbuilds` - directories with `PKGBUILD` files to be built and installed
 
 you can also define custom locations to these files with a `$HOME/.config/setuper/init.sh`, like:
 
@@ -56,6 +57,7 @@ config_files_dir=$HOME/.arch_config/
 system_files_dir=$HOME/.system/
 user_files_dir=$HOME/.dotfiles/
 sourced_package_dir=$HOME/.mypackages/
+pkgbuild_dir=$HOME/.mypkgbuilds/
 ```
 
 ### Functions
@@ -69,6 +71,8 @@ sourced_package_dir=$HOME/.mypackages/
     - `--group` - group packages for arch linux
     - `--flatpak` - flatpak packages
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
+    - `--pkgbuild` or `--pkgbuild=dir` - builds and installs the package from `pkgbuilds/packagename/PKGBUILD` (or `pkgbuilds/dir/PKGBUILD`) with `makepkg`, only arch linux
+        - it's only rebuilt when the `epoch:pkgver-pkgrel` differs from the installed version, bump `pkgrel` to force a rebuild (`pkgver()` functions are not evaluated)
 - `RemovePkg/RemovePackage packagename` - removes said package
 - `DisableNonInteractiveMode` - allows package managers (pacman, yay, apt) to prompt for user confirmation during installation
 - `InstallAURSeparately` - separates pacman and yay package installations, instead of running both at the same time

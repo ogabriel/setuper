@@ -44,8 +44,8 @@ function __HandleArchPackagesRemoval() {
             [[ $installed_package != "base" ]] &&
             __InstalledPackageNotInPackages? $installed_package &&
             __InstalledPackageNotInAurPackages? $installed_package &&
-            __InstalledPackageNotInAurPackages? $installed_package &&
             __InstalledPackageNotInSourcedPackages? $installed_package &&
+            __InstalledPackageNotInPkgbuildPackages? $installed_package &&
             __InstalledPackageNotInGroupPackages? $installed_package; then
             packages_to_remove+=($installed_package)
         fi
@@ -93,6 +93,22 @@ function __InstalledPackageNotInSourcedPackages?() {
         readarray -d ' ' sourced_package_config <<<"${sourced_packages[$i]}"
 
         local package=${sourced_package_config[0]}
+        package=${package//[[:space:]]/}
+
+        if [[ $package == $1 ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+function __InstalledPackageNotInPkgbuildPackages?() {
+    for ((i = 0; i < ${#pkgbuild_packages[@]}; i++)); do
+        local pkgbuild_package_config
+        readarray -d ' ' pkgbuild_package_config <<<"${pkgbuild_packages[$i]}"
+
+        local package=${pkgbuild_package_config[0]}
         package=${package//[[:space:]]/}
 
         if [[ $package == $1 ]]; then
@@ -232,4 +248,86 @@ function HandleSourcedPackages() {
             ;;
         esac
     done
+}
+
+function HandlePkgbuildPackages() {
+    local packages_to_build=()
+
+    for ((i = 0; i < ${#pkgbuild_packages[@]}; i++)); do
+        local pkgbuild_package_config
+        readarray -d ' ' pkgbuild_package_config <<<"${pkgbuild_packages[$i]}"
+
+        local package=${pkgbuild_package_config[0]//[[:space:]]/}
+        local dir=${pkgbuild_package_config[1]//[[:space:]]/}
+
+        local srcinfo=$(cd $dir && makepkg --printsrcinfo)
+
+        if ! grep -qxP "pkgname = \Q$package\E" <<<"$srcinfo"; then
+            Error "Package $package not found in $dir/PKGBUILD"
+        fi
+
+        local epoch=$(grep -oP '^\s*epoch = \K.+' <<<"$srcinfo" | head -1 || echo "")
+        local pkgver=$(grep -oP '^\s*pkgver = \K.+' <<<"$srcinfo" | head -1)
+        local pkgrel=$(grep -oP '^\s*pkgrel = \K.+' <<<"$srcinfo" | head -1)
+        local version=${epoch:+$epoch:}$pkgver-$pkgrel
+
+        # pacman -Q also matches packages that provide $package
+        local installed=$(pacman -Q $package 2>/dev/null || echo "")
+
+        if [[ $installed != "$package $version" ]]; then
+            packages_to_build+=("$package $version $dir")
+        fi
+    done
+
+    if [[ ${#packages_to_build[*]} -eq 0 ]]; then
+        if [[ ${#pkgbuild_packages[*]} -gt 0 ]]; then
+            Info "No PKGBUILD packages to install"
+        fi
+
+        return
+    fi
+
+    local package_names=()
+
+    for package_to_build in "${packages_to_build[@]}"; do
+        package_names+=(${package_to_build%% *})
+    done
+
+    Info "Installing PKGBUILD packages: ${package_names[*]}"
+    Info "Proceed with installation? [Y/n]"
+    read -n 1 key
+    echo
+
+    if [[ $key != "Y" ]]; then
+        Info "PKGBUILD packages not installed"
+        return
+    fi
+
+    sudo pacman -S --needed $pacman_noconfirm base-devel
+
+    local package_files=()
+
+    for package_to_build in "${packages_to_build[@]}"; do
+        local package version dir
+        read package version dir <<<"$package_to_build"
+
+        Info "Building PKGBUILD package $package $version"
+
+        local build_dir=${XDG_CACHE_HOME:-$HOME/.cache}/setuper/pkgbuilds/$package
+        rm -rf $build_dir
+        mkdir -p $build_dir
+        cp -r $dir/. $build_dir
+
+        (cd $build_dir && makepkg -s --needed --cleanbuild $pacman_noconfirm)
+
+        # only the declared package, skipping split and debug packages
+        for file in $(cd $build_dir && makepkg --packagelist); do
+            if [[ ${file##*/} == "$package-$version-"* ]]; then
+                package_files+=($file)
+            fi
+        done
+    done
+
+    Info "Installing PKGBUILD packages with pacman"
+    sudo pacman -U $pacman_noconfirm --needed ${package_files[*]}
 }
