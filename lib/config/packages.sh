@@ -55,6 +55,24 @@ function Package() {
         else
             Error "Invalid package source file $file"
         fi
+    elif [[ $2 == '--pkgbuild' ]] || [[ $2 =~ --pkgbuild=.* ]]; then
+        ValidateExactFunctionParams 2 $# $FUNCNAME
+
+        if [[ $distro != 'arch' ]]; then
+            Error "PKGBUILD packages are only supported on Arch Linux"
+        fi
+
+        if [[ $2 == '--pkgbuild' ]]; then
+            local dir=$pkgbuild_dir$1
+        else
+            local dir=$pkgbuild_dir${2#--pkgbuild=}
+        fi
+
+        if [[ -f $dir/PKGBUILD ]]; then
+            pkgbuild_packages+=("$1 $dir")
+        else
+            Error "Invalid PKGBUILD $dir/PKGBUILD"
+        fi
     elif [[ $2 == '--flatpak' ]]; then
         ValidateExactFunctionParams 2 $# $FUNCNAME
 

@@ -15,6 +15,7 @@ function LoadConfig() {
     : ${system_files_dir:=$config_dir/system/}
     : ${user_files_dir:=$config_dir/user/}
     : ${sourced_package_dir:=$config_dir/packages/}
+    : ${pkgbuild_dir:=$config_dir/pkgbuilds/}
 
     CheckConfig
 

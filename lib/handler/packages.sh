@@ -45,6 +45,7 @@ function __HandleArchPackagesRemoval() {
             __InstalledPackageNotInPackages? $installed_package &&
             __InstalledPackageNotInAurPackages? $installed_package &&
             __InstalledPackageNotInSourcedPackages? $installed_package &&
+            __InstalledPackageNotInPkgbuildPackages? $installed_package &&
             __InstalledPackageNotInGroupPackages? $installed_package; then
             packages_to_remove+=($installed_package)
         fi
@@ -92,6 +93,22 @@ function __InstalledPackageNotInSourcedPackages?() {
         readarray -d ' ' sourced_package_config <<<"${sourced_packages[$i]}"
 
         local package=${sourced_package_config[0]}
+        package=${package//[[:space:]]/}
+
+        if [[ $package == $1 ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+function __InstalledPackageNotInPkgbuildPackages?() {
+    for ((i = 0; i < ${#pkgbuild_packages[@]}; i++)); do
+        local pkgbuild_package_config
+        readarray -d ' ' pkgbuild_package_config <<<"${pkgbuild_packages[$i]}"
+
+        local package=${pkgbuild_package_config[0]}
         package=${package//[[:space:]]/}
 
         if [[ $package == $1 ]]; then
@@ -230,5 +247,48 @@ function HandleSourcedPackages() {
             Error "Installer not found for distro: $distro"
             ;;
         esac
+    done
+}
+
+function HandlePkgbuildPackages() {
+    if [[ ${#pkgbuild_packages[*]} -eq 0 ]]; then
+        return
+    fi
+
+    sudo pacman -S --needed $pacman_noconfirm base-devel
+
+    for ((i = 0; i < ${#pkgbuild_packages[@]}; i++)); do
+        local pkgbuild_package_config
+        readarray -d ' ' pkgbuild_package_config <<<"${pkgbuild_packages[$i]}"
+
+        local package=${pkgbuild_package_config[0]}
+        local dir=${pkgbuild_package_config[1]//[[:space:]]/}
+
+        local srcinfo=$(cd $dir && makepkg --printsrcinfo)
+
+        if ! grep -qxP "pkgname = \Q$package\E" <<<"$srcinfo"; then
+            Error "Package $package not found in $dir/PKGBUILD"
+        fi
+
+        local epoch=$(grep -oP '^\s*epoch = \K.+' <<<"$srcinfo" | head -1 || echo "")
+        local pkgver=$(grep -oP '^\s*pkgver = \K.+' <<<"$srcinfo" | head -1)
+        local pkgrel=$(grep -oP '^\s*pkgrel = \K.+' <<<"$srcinfo" | head -1)
+        local version=${epoch:+$epoch:}$pkgver-$pkgrel
+
+        local installed_version=$(pacman -Q $package 2>/dev/null | cut -d ' ' -f 2 || echo "")
+
+        if [[ $installed_version == $version ]]; then
+            Info "PKGBUILD package $package is up to date"
+            continue
+        fi
+
+        Info "Building PKGBUILD package $package $version"
+
+        local build_dir=${XDG_CACHE_HOME:-$HOME/.cache}/setuper/pkgbuilds/$package
+        rm -rf $build_dir
+        mkdir -p $build_dir
+        cp -r $dir/. $build_dir
+
+        (cd $build_dir && makepkg -si --needed --cleanbuild $pacman_noconfirm)
     done
 }
