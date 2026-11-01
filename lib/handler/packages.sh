@@ -276,6 +276,7 @@ function HandlePkgbuildPackages() {
 
         if [[ $installed != "$package $version" ]]; then
             packages_to_build+=("$package $version $dir")
+            pkgbuild_dependencies+=($(grep -oP "^\s*(make|check)?depends(_$(uname -m))? = \K.+" <<<"$srcinfo" || echo ""))
         fi
     done
 
@@ -305,29 +306,76 @@ function HandlePkgbuildPackages() {
 
     sudo pacman -S --needed $pacman_noconfirm base-devel
 
+    __InstallPkgbuildDependencies ${package_names[*]}
+
     local package_files=()
 
     for package_to_build in "${packages_to_build[@]}"; do
         local package version dir
         read package version dir <<<"$package_to_build"
 
-        Info "Building PKGBUILD package $package $version"
-
+        # kept between runs, so downloaded sources and built packages are reused
         local build_dir=${XDG_CACHE_HOME:-$HOME/.cache}/setuper/pkgbuilds/$package
-        rm -rf $build_dir
         mkdir -p $build_dir
         cp -r $dir/. $build_dir
 
-        (cd $build_dir && makepkg -s --needed --cleanbuild $pacman_noconfirm)
+        local package_list=($(cd $build_dir && makepkg --packagelist))
+        local package_file=""
 
         # only the declared package, skipping split and debug packages
-        for file in $(cd $build_dir && makepkg --packagelist); do
+        for file in ${package_list[*]}; do
             if [[ ${file##*/} == "$package-$version-"* ]]; then
-                package_files+=($file)
+                package_file=$file
             fi
         done
+
+        if [[ -f $package_file ]]; then
+            Info "Using cached build of PKGBUILD package $package $version"
+        else
+            Info "Building PKGBUILD package $package $version"
+            (cd $build_dir && makepkg -s --needed --cleanbuild $pacman_noconfirm)
+        fi
+
+        __RemoveStalePkgbuildBuilds $build_dir ${package_list[*]}
+
+        package_files+=($package_file)
     done
 
     Info "Installing PKGBUILD packages with pacman"
     sudo pacman -U $pacman_noconfirm --needed ${package_files[*]}
+}
+
+function __InstallPkgbuildDependencies() {
+    if [[ ${#pkgbuild_dependencies[*]} -eq 0 ]]; then
+        return
+    fi
+
+    # pacman -T prints the dependencies that are not satisfied
+    local missing_dependencies=($(pacman -T ${pkgbuild_dependencies[*]} || true))
+    local dependencies_to_install=()
+
+    for dependency in ${missing_dependencies[*]}; do
+        local name=${dependency%%[<>=]*}
+
+        # built together with the other PKGBUILD packages
+        if [[ " $* " != *" $name "* ]]; then
+            dependencies_to_install+=($name)
+        fi
+    done
+
+    if [[ ${#dependencies_to_install[*]} -gt 0 ]]; then
+        Info "Installing PKGBUILD dependencies: ${dependencies_to_install[*]}"
+        sudo pacman -S --needed --asdeps $pacman_noconfirm ${dependencies_to_install[*]}
+    fi
+}
+
+function __RemoveStalePkgbuildBuilds() {
+    local build_dir=$1
+    shift
+
+    for file in $build_dir/*.pkg.tar.*; do
+        if [[ -f $file && " $* " != *" $file "* ]]; then
+            rm $file
+        fi
+    done
 }
