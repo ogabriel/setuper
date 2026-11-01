@@ -251,11 +251,7 @@ function HandleSourcedPackages() {
 }
 
 function HandlePkgbuildPackages() {
-    if [[ ${#pkgbuild_packages[*]} -eq 0 ]]; then
-        return
-    fi
-
-    sudo pacman -S --needed $pacman_noconfirm base-devel
+    local packages_to_build=()
 
     for ((i = 0; i < ${#pkgbuild_packages[@]}; i++)); do
         local pkgbuild_package_config
@@ -278,10 +274,42 @@ function HandlePkgbuildPackages() {
         # pacman -Q also matches packages that provide $package
         local installed=$(pacman -Q $package 2>/dev/null || echo "")
 
-        if [[ $installed == "$package $version" ]]; then
-            Info "PKGBUILD package $package is up to date"
-            continue
+        if [[ $installed != "$package $version" ]]; then
+            packages_to_build+=("$package $version $dir")
         fi
+    done
+
+    if [[ ${#packages_to_build[*]} -eq 0 ]]; then
+        if [[ ${#pkgbuild_packages[*]} -gt 0 ]]; then
+            Info "No PKGBUILD packages to install"
+        fi
+
+        return
+    fi
+
+    local package_names=()
+
+    for package_to_build in "${packages_to_build[@]}"; do
+        package_names+=(${package_to_build%% *})
+    done
+
+    Info "Installing PKGBUILD packages: ${package_names[*]}"
+    Info "Proceed with installation? [Y/n]"
+    read -n 1 key
+    echo
+
+    if [[ $key != "Y" ]]; then
+        Info "PKGBUILD packages not installed"
+        return
+    fi
+
+    sudo pacman -S --needed $pacman_noconfirm base-devel
+
+    local package_files=()
+
+    for package_to_build in "${packages_to_build[@]}"; do
+        local package version dir
+        read package version dir <<<"$package_to_build"
 
         Info "Building PKGBUILD package $package $version"
 
@@ -290,6 +318,16 @@ function HandlePkgbuildPackages() {
         mkdir -p $build_dir
         cp -r $dir/. $build_dir
 
-        (cd $build_dir && makepkg -si --needed --cleanbuild $pacman_noconfirm)
+        (cd $build_dir && makepkg -s --needed --cleanbuild $pacman_noconfirm)
+
+        # only the declared package, skipping split and debug packages
+        for file in $(cd $build_dir && makepkg --packagelist); do
+            if [[ ${file##*/} == "$package-$version-"* ]]; then
+                package_files+=($file)
+            fi
+        done
     done
+
+    Info "Installing PKGBUILD packages with pacman"
+    sudo pacman -U $pacman_noconfirm --needed ${package_files[*]}
 }
