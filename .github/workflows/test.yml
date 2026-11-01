@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  pull_request:
+    branches: ["master"]
+    paths-ignore:
+    - 'README.md'
+    - LICENSE
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: tests/Gemfile
+      BUNDLE_GEMFILE.lock: tests/Gemfile.lock
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
+
+    - name: test
+      run: cat /etc/os-release
+
+    - name: run bashcov
+      run: bundle exec bashcov ./setuper
