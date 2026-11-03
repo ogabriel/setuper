@@ -73,6 +73,8 @@ pkgbuild_dir=$HOME/.mypkgbuilds/
     - `--source=file` - this allows you to install a specific package in your config directories, like a `pkg.tar.zst` or `deb`, the file must be in the folder `packages/file`
     - `--pkgbuild` or `--pkgbuild=dir` - builds and installs the package from `pkgbuilds/packagename/PKGBUILD` (or `pkgbuilds/dir/PKGBUILD`) with `makepkg`, only arch linux
         - it's only rebuilt when the `epoch:pkgver-pkgrel` differs from the installed version, bump `pkgrel` to force a rebuild (`pkgver()` functions are not evaluated)
+        - the dependencies of every PKGBUILD are installed first, then all packages are built in `~/.cache/setuper/pkgbuilds/` and installed at the same time with `pacman -U`
+        - the downloaded sources and the built package are kept in the cache, so a failed run doesn't build again packages that were already built
 - `RemovePkg/RemovePackage packagename` - removes said package
 - `DisableNonInteractiveMode` - allows package managers (pacman, yay, apt) to prompt for user confirmation during installation
 - `InstallAURSeparately` - separates pacman and yay package installations, instead of running both at the same time
